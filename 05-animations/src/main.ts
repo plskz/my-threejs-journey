@@ -80,6 +80,7 @@ const tick1 = () => {
 const animations = [{ x: -2 }, { y: 1.2 }, { x: 2 }, { y: -1.2 }, { x: -2 }]
 const tl = gsap.timeline({ repeat: -1, yoyo: true })
 animations.map((animation) => tl.to(mesh.position, animation))
+tl.to(mesh.rotation, { duration: 1.2, y: Math.PI * 2 })
 
 const tick2 = () => {
   // Render
