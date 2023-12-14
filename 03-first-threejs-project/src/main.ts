@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 
+// Canvas
 const canvas = document.querySelector<HTMLCanvasElement>('canvas.webgl')!
 
 // Scene
