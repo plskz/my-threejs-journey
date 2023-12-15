@@ -40,7 +40,7 @@ const clock = new THREE.Clock()
 const tick1 = () => {
   const elapsedTime = clock.getElapsedTime()
 
-  // Update objects
+  // // Update objects
   // mesh.position.y = Math.sin(elapsedTime)
   // mesh.rotation.y = Math.sin(elapsedTime) * Math.PI * 2 // full rotation
 
