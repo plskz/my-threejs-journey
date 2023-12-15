@@ -30,8 +30,23 @@ window.addEventListener('resize', () => {
 const scene = new THREE.Scene()
 
 // Objects
-const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 'red' })
+// const geometry = new THREE.BoxGeometry(1, 1, 1, 5, 5, 5)
+
+const count = 500
+
+const geometry = new THREE.BufferGeometry()
+const positionsArray = new Float32Array(count * 3 * 3)
+
+for (let i = 0; i < count * 3 * 3; i++) {
+  positionsArray[i] = (Math.random() - 0.5) * 2
+}
+console.log(positionsArray)
+
+const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
+
+geometry.setAttribute('position', positionsAttribute)
+
+const material = new THREE.MeshBasicMaterial({ color: 'red', wireframe: true })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
