@@ -2,6 +2,10 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { gsap } from 'gsap'
+import GUI from 'lil-gui'
+
+const gui = new GUI()
+let debugObject: any = {}
 
 // Canvas
 const canvas = document.querySelector<HTMLCanvasElement>('canvas.webgl')!
@@ -31,10 +35,64 @@ window.addEventListener('resize', () => {
 const scene = new THREE.Scene()
 
 // Objects
+debugObject.color = '#e137c2'
+
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2)
-const material = new THREE.MeshBasicMaterial({ color: 'red' })
+const material = new THREE.MeshBasicMaterial({
+  color: debugObject.color,
+  wireframe: true,
+})
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
+
+// GUI
+gui.add(mesh, 'visible')
+gui.add(material, 'wireframe')
+gui.addColor(debugObject, 'color').onChange(() => {
+  material.color.set(debugObject.color)
+})
+
+debugObject.subdivision = 1
+gui
+  .add(debugObject, 'subdivision')
+  .min(1)
+  .max(20)
+  .step(1)
+  .onFinishChange(() => {
+    geometry.dispose
+    mesh.geometry = new THREE.BoxGeometry(
+      1,
+      1,
+      1,
+      debugObject.subdivision,
+      debugObject.subdivision,
+      debugObject.subdivision
+    )
+  })
+
+debugObject.spinX = () => {
+  gsap.to(mesh.rotation, { x: mesh.rotation.x + Math.PI * 2 })
+}
+gui.add(debugObject, 'spinX')
+
+debugObject.spinY = () => {
+  gsap.to(mesh.rotation, { y: mesh.rotation.y + Math.PI * 2 })
+}
+gui.add(debugObject, 'spinY')
+
+const positions = gui.addFolder('Position')
+positions.add(mesh.position, 'x').min(-3).max(3).step(0.01)
+positions.add(mesh.position, 'y').min(-3).max(3).step(0.01)
+positions.add(mesh.position, 'z').min(-3).max(3).step(0.01)
+
+const rotations = gui.addFolder('Rotations')
+rotations.add(mesh.rotation, 'x').min(-3).max(3).step(0.01)
+rotations.add(mesh.rotation, 'y').min(-3).max(3).step(0.01)
+rotations.add(mesh.rotation, 'z').min(-3).max(3).step(0.01)
+
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'h') gui.show(gui._hidden)
+})
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
