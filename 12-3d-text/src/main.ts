@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { FontLoader } from 'three/addons/loaders/FontLoader.js'
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js'
 
-import { gsap } from 'gsap'
+// import { gsap } from 'gsap'
 import { GUI } from 'lil-gui'
 
 // Debug
