@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
 
 
-import { gsap } from 'gsap'
+// import { gsap } from 'gsap'
 import GUI from 'lil-gui'
 
 /**
