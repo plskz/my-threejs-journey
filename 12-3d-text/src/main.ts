@@ -10,6 +10,7 @@ import { GUI } from 'lil-gui'
 
 // Debug
 const gui = new GUI()
+gui.hide()
 
 window.addEventListener('keydown', (event) => {
   if (event.key === 'h') gui.show(gui._hidden)
