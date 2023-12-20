@@ -43,8 +43,9 @@ window.addEventListener('resize', () => {
 const scene = new THREE.Scene()
 
 // Axes helper
-const axesHelper = new THREE.AxesHelper()
+const axesHelper = new THREE.AxesHelper(5)
 scene.add(axesHelper)
+gui.add(axesHelper, 'visible').name('AxesHelper')
 
 // Textures
 const textureLoader = new THREE.TextureLoader()
@@ -86,7 +87,7 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
   scene.add(text)
 
   // controls for textGeometry
-  gui.add(text, 'visible')
+  gui.add(text, 'visible').name('TextGeometry')
   const folderTextGeometry = gui.addFolder('Position')
   folderTextGeometry.add(text.position, 'x').min(-3).max(3).step(0.01).name('x').name('position.x')
   folderTextGeometry.add(text.position, 'y').min(-3).max(3).step(0.01).name('y').name('position.y')
