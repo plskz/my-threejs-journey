@@ -10,7 +10,6 @@ import { GUI } from 'lil-gui'
 
 // Debug
 const gui = new GUI()
-gui.hide()
 
 window.addEventListener('keydown', (event) => {
   if (event.key === 'h') gui.show(gui._hidden)
@@ -85,6 +84,21 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
 
   const text = new THREE.Mesh(textGeometry, textMaterial)
   scene.add(text)
+
+  // controls for textGeometry
+  gui.add(text, 'visible')
+  const folderTextGeometry = gui.addFolder('Position')
+  folderTextGeometry.add(text.position, 'x').min(-3).max(3).step(0.01).name('x').name('position.x')
+  folderTextGeometry.add(text.position, 'y').min(-3).max(3).step(0.01).name('y').name('position.y')
+  folderTextGeometry.add(text.position, 'z').min(-3).max(3).step(0.01).name('z').name('position.z')
+  const folderTextGeometryRotation = gui.addFolder('Rotation')
+  folderTextGeometryRotation.add(text.rotation, 'x').min(-Math.PI).max(Math.PI).step(0.01).name('x').name('rotation.x')
+  folderTextGeometryRotation.add(text.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.01).name('y').name('rotation.y')
+  folderTextGeometryRotation.add(text.rotation, 'z').min(-Math.PI).max(Math.PI).step(0.01).name('z').name('rotation.z')
+  const folderTextGeometryScale = gui.addFolder('Scale')
+  folderTextGeometryScale.add(text.scale, 'x').min(0).max(3).step(0.01).name('x').name('scale.x')
+  folderTextGeometryScale.add(text.scale, 'y').min(0).max(3).step(0.01).name('y').name('scale.y')
+  folderTextGeometryScale.add(text.scale, 'z').min(0).max(3).step(0.01).name('z').name('scale.z')
 })
 
 // Donuts
