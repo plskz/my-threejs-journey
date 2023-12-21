@@ -86,15 +86,6 @@ directionalLight.shadow.camera.far = 6
 // won't work if the renderer.shadowMap.type is set to THREE.PCFSoftShadowMap
 // directionalLight.shadow.radius = 10
 
-const directionalLightCameraHelper = new THREE.CameraHelper(
-  directionalLight.shadow.camera
-)
-directionalLightCameraHelper.visible = false
-folderDirectionalLight
-  .add(directionalLightCameraHelper, 'visible')
-  .name('directionalLightHelper')
-scene.add(directionalLightCameraHelper)
-
 // Spot light
 const spotLight = new THREE.SpotLight(0xffffff, 3.6, 10, Math.PI * 0.3)
 spotLight.castShadow = true
@@ -118,11 +109,6 @@ folderSpotLight
   .max(Math.PI / 2)
   .step(0.001)
 
-const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera)
-spotLightCameraHelper.visible = false
-scene.add(spotLightCameraHelper)
-folderSpotLight.add(spotLightCameraHelper, 'visible').name('spotLightHelper')
-
 // Point light
 const pointLight = new THREE.PointLight(0xffffff, 2.7)
 pointLight.castShadow = true
@@ -139,11 +125,6 @@ folderPointLight.add(pointLight, 'intensity').min(0).max(3).step(0.001)
 folderPointLight.add(pointLight.position, 'x').min(-5).max(5).step(0.001)
 folderPointLight.add(pointLight.position, 'y').min(-5).max(5).step(0.001)
 folderPointLight.add(pointLight.position, 'z').min(-5).max(5).step(0.001)
-
-const pointLightCameraHelper = new THREE.CameraHelper(pointLight.shadow.camera)
-pointLightCameraHelper.visible = false
-scene.add(pointLightCameraHelper)
-folderPointLight.add(pointLightCameraHelper, 'visible').name('pointLightHelper')
 
 /**
  * Materials
