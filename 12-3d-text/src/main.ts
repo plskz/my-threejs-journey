@@ -41,6 +41,8 @@ window.addEventListener('resize', () => {
 
 // Scene
 const scene = new THREE.Scene()
+const donutGroup = new THREE.Group()
+scene.add(donutGroup)
 
 // Axes helper
 const axesHelper = new THREE.AxesHelper(5)
@@ -123,7 +125,7 @@ for (let i = 0; i < 400; i++) {
     donutGeometry,
     donutMaterials[Math.floor(Math.random() * donutMaterials.length)]
   )
-  scene.add(donut)
+  donutGroup.add(donut)
 
   donut.position.x = (Math.random() - 0.5) * 10
   donut.position.y = (Math.random() - 0.5) * 10
@@ -136,6 +138,8 @@ for (let i = 0; i < 400; i++) {
 
   donuts.push({ object: donut, speed: Math.random() })
 }
+
+gui.add(donutGroup, 'visible').name('Donuts')
 
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
