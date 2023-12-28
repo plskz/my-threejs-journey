@@ -3,7 +3,7 @@ import * as THREE from 'three'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
-import { gsap } from 'gsap'
+// import { gsap } from 'gsap'
 import GUI from 'lil-gui'
 
 /**
@@ -34,6 +34,7 @@ const parameters = {
   randomnessPower: 3,
   insideColor: '#c816d4',
   outsideColor: '#2e6b85',
+  rotationSpeed: 0.05,
 }
 
 let geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = null!
@@ -118,6 +119,7 @@ gui.add(parameters, 'randomness').min(0).max(2).step(0.001).onFinishChange(gener
 gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).onFinishChange(generateGalaxy)
 gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
 gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
+gui.add(parameters, 'rotationSpeed').min(0).max(2).step(0.001)
 
 /**
  * Sizes
@@ -151,7 +153,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 )
-camera.position.set(3, 3, 3)
+camera.position.set(3.2, 4, 8)
 scene.add(camera)
 
 // Controls
@@ -174,6 +176,9 @@ const clock = new THREE.Clock()
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime()
+
+  // Update points
+  points.rotation.y = elapsedTime * parameters.rotationSpeed
 
   // Update controls
   controls.update()
