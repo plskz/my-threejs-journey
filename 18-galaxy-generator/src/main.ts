@@ -27,13 +27,13 @@ const scene = new THREE.Scene()
 const parameters = {
   count: 100_000,
   size: 0.01,
-  radius: 5,
-  branches: 3,
+  radius: 12,
+  branches: 5,
   spin: 1,
   randomness: 0.2,
   randomnessPower: 3,
-  insideColor: '#ff6030',
-  outsideColor: '#1b3984',
+  insideColor: '#c816d4',
+  outsideColor: '#2e6b85',
 }
 
 let geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = null!
