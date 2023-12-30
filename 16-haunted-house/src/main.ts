@@ -36,41 +36,43 @@ folderFog.add(fog, 'far').min(0).max(15).step(0.001)
  */
 const textureLoader = new THREE.TextureLoader()
 
-const doorColorTexture = textureLoader.load('/textures/door/color.jpg')
-doorColorTexture.colorSpace = THREE.SRGBColorSpace
-const doorAlphaTexture = textureLoader.load('/textures/door/alpha.jpg')
-const doorAmbientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
-const doorHeightTexture = textureLoader.load('/textures/door/height.jpg')
-const doorNormalTexture = textureLoader.load('/textures/door/normal.jpg')
-const doorMetalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
-const doorRoughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
+const doorTextures = {
+  color: textureLoader.load('/textures/door/color.jpg'),
+  alpha: textureLoader.load('/textures/door/alpha.jpg'),
+  ambientOcclusion: textureLoader.load('/textures/door/ambientOcclusion.jpg'),
+  height: textureLoader.load('/textures/door/height.jpg'),
+  normal: textureLoader.load('/textures/door/normal.jpg'),
+  metalness: textureLoader.load('/textures/door/metalness.jpg'),
+  roughness: textureLoader.load('/textures/door/roughness.jpg'),
+}
+doorTextures.color.colorSpace = THREE.SRGBColorSpace
 
-const bricksColorTexture = textureLoader.load('/textures/bricks/color.jpg')
-bricksColorTexture.colorSpace = THREE.SRGBColorSpace
-const bricksAmbientOcclusionTexture = textureLoader.load('/textures/bricks/ambientOcclusion.jpg')
-const bricksNormalTexture = textureLoader.load('/textures/bricks/normal.jpg')
-const bricksRoughnessTexture = textureLoader.load('/textures/bricks/roughness.jpg')
+const brickTextures = {
+  color: textureLoader.load('/textures/bricks/color.jpg'),
+  ambientOcclusion: textureLoader.load('/textures/bricks/ambientOcclusion.jpg'),
+  normal: textureLoader.load('/textures/bricks/normal.jpg'),
+  roughness: textureLoader.load('/textures/bricks/roughness.jpg'),
+}
+brickTextures.color.colorSpace = THREE.SRGBColorSpace
 
-const grassColorTexture = textureLoader.load('/textures/grass/color.jpg')
-grassColorTexture.colorSpace = THREE.SRGBColorSpace
-const grassAmbientOcclusionTexture = textureLoader.load('/textures/grass/ambientOcclusion.jpg')
-const grassNormalTexture = textureLoader.load('/textures/grass/normal.jpg')
-const grassRoughnessTexture = textureLoader.load('/textures/grass/roughness.jpg')
+const grassTextures = {
+  ambientOcclusion: textureLoader.load('/textures/grass/ambientOcclusion.jpg'),
+  color: textureLoader.load('/textures/grass/color.jpg'),
+  normal: textureLoader.load('/textures/grass/normal.jpg'),
+  roughness: textureLoader.load('/textures/grass/roughness.jpg'),
+} as any
 
-grassColorTexture.repeat.set(8, 8)
-grassAmbientOcclusionTexture.repeat.set(8, 8)
-grassNormalTexture.repeat.set(8, 8)
-grassRoughnessTexture.repeat.set(8, 8)
+for (const prop in grassTextures) {
+  // Access the current texture
+  const currentTexture = grassTextures[prop]
 
-grassColorTexture.wrapS = THREE.RepeatWrapping
-grassAmbientOcclusionTexture.wrapS = THREE.RepeatWrapping
-grassNormalTexture.wrapS = THREE.RepeatWrapping
-grassRoughnessTexture.wrapS = THREE.RepeatWrapping
+  prop === 'color' ? (currentTexture.colorSpace = THREE.SRGBColorSpace) : ''
 
-grassColorTexture.wrapT = THREE.RepeatWrapping
-grassAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping
-grassNormalTexture.wrapT = THREE.RepeatWrapping
-grassRoughnessTexture.wrapT = THREE.RepeatWrapping
+  // Set texture properties
+  currentTexture.repeat.set(8, 8)
+  currentTexture.wrapS = THREE.RepeatWrapping
+  currentTexture.wrapT = THREE.RepeatWrapping
+}
 
 /**
  * House
@@ -83,10 +85,10 @@ scene.add(house)
 const walls = new THREE.Mesh(
   new THREE.BoxGeometry(4, 2.5, 4),
   new THREE.MeshStandardMaterial({
-    map: bricksColorTexture,
-    aoMap: bricksAmbientOcclusionTexture,
-    normalMap: bricksNormalTexture,
-    roughnessMap: bricksRoughnessTexture,
+    map: brickTextures.color,
+    aoMap: brickTextures.ambientOcclusion,
+    normalMap: brickTextures.normal,
+    roughnessMap: brickTextures.roughness,
   })
 )
 walls.position.y = 2.5 / 2
@@ -105,15 +107,15 @@ house.add(roof)
 const door = new THREE.Mesh(
   new THREE.PlaneGeometry(2.2, 2.2, 50, 50),
   new THREE.MeshStandardMaterial({
-    map: doorColorTexture,
+    map: doorTextures.color,
     transparent: true,
-    alphaMap: doorAlphaTexture,
-    aoMap: doorAmbientOcclusionTexture,
-    displacementMap: doorHeightTexture,
+    alphaMap: doorTextures.alpha,
+    aoMap: doorTextures.ambientOcclusion,
+    displacementMap: doorTextures.height,
     displacementScale: 0.1,
-    normalMap: doorNormalTexture,
-    metalnessMap: doorMetalnessTexture,
-    roughnessMap: doorRoughnessTexture,
+    normalMap: doorTextures.normal,
+    metalnessMap: doorTextures.metalness,
+    roughnessMap: doorTextures.roughness,
   })
 )
 door.position.y = 1
@@ -166,12 +168,12 @@ for (let i = 0; i < 50; i++) {
 // Floor
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(35, 35),
-  new THREE.MeshStandardMaterial({ 
-    map: grassColorTexture,
-    aoMap: grassAmbientOcclusionTexture,
-    normalMap: grassNormalTexture,
-    roughnessMap: grassRoughnessTexture,
-   })
+  new THREE.MeshStandardMaterial({
+    map: grassTextures.color,
+    aoMap: grassTextures.ambientOcclusion,
+    normalMap: grassTextures.normal,
+    roughnessMap: grassTextures.roughness,
+  })
 )
 floor.rotation.x = -Math.PI * 0.5
 floor.position.y = 0
@@ -330,12 +332,12 @@ const tick = () => {
   ghost1.position.z = Math.sin(ghost1Angle) * 4
   ghost1.position.y = Math.sin(elapsedTime * 3)
 
-  const ghost2Angle = - elapsedTime * 0.32
+  const ghost2Angle = -elapsedTime * 0.32
   ghost2.position.x = Math.cos(ghost2Angle) * 5.5
   ghost2.position.z = Math.sin(ghost2Angle) * 5.5
   ghost2.position.y = Math.sin(elapsedTime * 2.5) + Math.sin(elapsedTime * 2.5)
 
-  const ghost3Angle = - elapsedTime * 0.18
+  const ghost3Angle = -elapsedTime * 0.18
   ghost3.position.x = Math.cos(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.32))
   ghost3.position.z = Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.5))
   ghost3.position.y = Math.sin(elapsedTime * 4) + Math.sin(elapsedTime * 2.5)
