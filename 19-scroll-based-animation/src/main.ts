@@ -10,7 +10,7 @@ import GUI from 'lil-gui'
 const gui = new GUI()
 
 const parameters = {
-  materialColor: '#ffeded',
+  materialColor: '#8349ca',
 }
 
 gui.addColor(parameters, 'materialColor').onChange(() => {
@@ -43,24 +43,44 @@ const material = new THREE.MeshToonMaterial({
 
 // Meshes
 const objectsDistance = 4
-const mesh1 = new THREE.Mesh(new THREE.TorusGeometry(1, 0.4, 16, 60), material)
-const mesh2 = new THREE.Mesh(new THREE.ConeGeometry(1, 2, 32), material)
-const mesh3 = new THREE.Mesh(
-  new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
-  material
-)
 
-mesh1.position.y = -objectsDistance * 0
-mesh2.position.y = -objectsDistance * 1
-mesh3.position.y = -objectsDistance * 2
+const geometries = {
+  boxGeometry: new THREE.Mesh(new THREE.BoxGeometry(), material),
+  capsuleGeometry: new THREE.Mesh(new THREE.CapsuleGeometry(), material),
+  circleGeometry: new THREE.Mesh(new THREE.CircleGeometry(), new THREE.MeshBasicMaterial({ color: parameters.materialColor, side: THREE.DoubleSide })),
+  coneGeometry: new THREE.Mesh(new THREE.ConeGeometry(), material),
+  cylinderGeometry: new THREE.Mesh(new THREE.CylinderGeometry(), material),
+  dodecahedronGeometry: new THREE.Mesh(new THREE.DodecahedronGeometry(), material),
+  extrudeGeometry: new THREE.Mesh(new THREE.ExtrudeGeometry(new THREE.Shape([new THREE.Vector2(0, 0), new THREE.Vector2(0, 1), new THREE.Vector2(1, 1), new THREE.Vector2(1, 0),]), { depth: 1 }), material),
+  icosahedronGeometry: new THREE.Mesh(new THREE.IcosahedronGeometry(), material),
+  octahedronGeometry: new THREE.Mesh(new THREE.OctahedronGeometry(), material),
+  planeGeometry: new THREE.Mesh(new THREE.PlaneGeometry(), material),
+  ringGeometry: new THREE.Mesh(new THREE.RingGeometry(), new THREE.MeshBasicMaterial({ color: parameters.materialColor, side: THREE.DoubleSide })),
+  sphereGeometry: new THREE.Mesh(new THREE.SphereGeometry(), material),
+  tetrahedronGeometry: new THREE.Mesh(new THREE.TetrahedronGeometry(), material),
+  torusGeometry: new THREE.Mesh(new THREE.TorusGeometry(), material),
+  torusKnotGeometry: new THREE.Mesh(new THREE.TorusKnotGeometry(), material),
+}
 
-mesh1.position.x = 2
-mesh2.position.x = -2
-mesh3.position.x = 2
+const geometriesLength = Object.keys(geometries).length
 
-scene.add(mesh1, mesh2, mesh3)
+for (let i = 0; i < geometriesLength; i++) {
+  const geometry = Object.values(geometries)[i]
+  geometry.scale.setScalar(0.8)
+  geometry.position.y = -objectsDistance * i
 
-const sectionMeshes = [mesh1, mesh2, mesh3]
+  // html append section.section>h2{geometry}}
+  const container = document.querySelector('.container')!
+  const section = document.createElement('section')
+
+  container.appendChild(section)
+  
+  const h2 = document.createElement('h2')
+  h2.innerText = Object.keys(geometries)[i]
+  section.appendChild(h2)
+
+  scene.add(geometry)
+}
 
 /**
  * Particles
@@ -72,7 +92,7 @@ const positions = new Float32Array(particlesCount * 3)
 for (let i = 0; i < particlesCount; i++) {
   const i3 = i * 3
   positions[i3 + 0] = (Math.random() - 0.5) * 10
-  positions[i3 + 1] = objectsDistance * 0.5 - Math.random() * objectsDistance * sectionMeshes.length
+  positions[i3 + 1] = objectsDistance * 0.5 - Math.random() * objectsDistance * geometriesLength
   positions[i3 + 2] = (Math.random() - 0.5) * 10
 }
 
@@ -160,17 +180,14 @@ window.addEventListener('scroll', () => {
   if (currentSection !== newSection) {
     currentSection = newSection
 
-    console.log(sectionMeshes[currentSection].rotation);
-
-    gsap.to(sectionMeshes[currentSection].rotation, {
-      duration: 1.5,
+    gsap.to(Object.values(geometries)[currentSection].rotation, {
+      duration: 1.23,
       ease: 'power1.inOut',
-      x: '+=4.5',
+      x: '+=2.5',
       y: '+=2',
       z: '+=1.5',
     })
   }
-
 })
 
 /**
@@ -207,9 +224,9 @@ const tick = () => {
   cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 5 * deltaTime
 
   // Animate meshes
-  for (const mesh of sectionMeshes) {
-    mesh.rotation.x += deltaTime * 0.1
-    mesh.rotation.y += deltaTime * 0.12
+  for (const geometry of Object.values(geometries)) {
+    geometry.rotation.x = elapsedTime * 0.1
+    geometry.rotation.y = elapsedTime * 0.32
   }
 
   // Render
