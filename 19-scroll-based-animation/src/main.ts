@@ -39,6 +39,7 @@ gradientTexture.magFilter = THREE.NearestFilter
 const material = new THREE.MeshToonMaterial({
   color: parameters.materialColor,
   gradientMap: gradientTexture,
+  side: THREE.DoubleSide,
 })
 
 // Meshes
@@ -47,7 +48,7 @@ const objectsDistance = 4
 const geometries = {
   boxGeometry: new THREE.Mesh(new THREE.BoxGeometry(), material),
   capsuleGeometry: new THREE.Mesh(new THREE.CapsuleGeometry(), material),
-  circleGeometry: new THREE.Mesh(new THREE.CircleGeometry(), new THREE.MeshBasicMaterial({ color: parameters.materialColor, side: THREE.DoubleSide })),
+  circleGeometry: new THREE.Mesh(new THREE.CircleGeometry(), material),
   coneGeometry: new THREE.Mesh(new THREE.ConeGeometry(), material),
   cylinderGeometry: new THREE.Mesh(new THREE.CylinderGeometry(), material),
   dodecahedronGeometry: new THREE.Mesh(new THREE.DodecahedronGeometry(), material),
@@ -55,7 +56,7 @@ const geometries = {
   icosahedronGeometry: new THREE.Mesh(new THREE.IcosahedronGeometry(), material),
   octahedronGeometry: new THREE.Mesh(new THREE.OctahedronGeometry(), material),
   planeGeometry: new THREE.Mesh(new THREE.PlaneGeometry(), material),
-  ringGeometry: new THREE.Mesh(new THREE.RingGeometry(), new THREE.MeshBasicMaterial({ color: parameters.materialColor, side: THREE.DoubleSide })),
+  ringGeometry: new THREE.Mesh(new THREE.RingGeometry(), material),
   sphereGeometry: new THREE.Mesh(new THREE.SphereGeometry(), material),
   tetrahedronGeometry: new THREE.Mesh(new THREE.TetrahedronGeometry(), material),
   torusGeometry: new THREE.Mesh(new THREE.TorusGeometry(), material),
