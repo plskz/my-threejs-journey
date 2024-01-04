@@ -1,6 +1,6 @@
 import './style.css'
 import * as THREE from 'three'
-import CANNON from 'cannon'
+import * as CANNON from 'cannon-es'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
@@ -30,7 +30,7 @@ const debugObject = {
     for (const object of objectsToUpdate) {
       // Remove body
       object.body.removeEventListener('collide', playHitSound)
-      world.remove(object.body)
+      world.removeBody(object.body)
 
       // Remove mesh
       scene.remove(object.mesh)
