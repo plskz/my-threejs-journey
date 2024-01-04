@@ -26,9 +26,22 @@ const debugObject = {
       z: (Math.random() - 0.5) * 3,
     })
   },
+  reset: () => {
+    for (const object of objectsToUpdate) {
+      // Remove body
+      object.body.removeEventListener('collide', playHitSound)
+      world.remove(object.body)
+
+      // Remove mesh
+      scene.remove(object.mesh)
+    }
+
+    objectsToUpdate.splice(0, objectsToUpdate.length)
+  },
 }
 gui.add(debugObject, 'createSphere')
 gui.add(debugObject, 'createBox')
+gui.add(debugObject, 'reset')
 
 /**
  * Base
