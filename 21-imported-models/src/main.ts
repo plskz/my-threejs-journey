@@ -2,6 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import GUI from 'lil-gui'
 
@@ -16,6 +17,19 @@ const canvas = document.querySelector<HTMLCanvasElement>('canvas.webgl')!
 
 // Scene
 const scene = new THREE.Scene()
+
+/**
+ * Models
+ */
+const loader = new GLTFLoader()
+loader.load(
+  '/models/FlightHelmet/glTF/FlightHelmet.gltf',
+  (gltf) => {
+    console.log(gltf)
+    scene.add(gltf.scene)
+  },
+)
+
 
 /**
  * Floor
