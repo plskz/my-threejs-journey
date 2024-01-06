@@ -12,6 +12,9 @@ import GUI from 'lil-gui'
  */
 // Debug
 const gui = new GUI()
+const debugObject = {
+  animation: 'Survey'
+}
 
 // Canvas
 const canvas = document.querySelector<HTMLCanvasElement>('canvas.webgl')!
@@ -32,9 +35,15 @@ let mixer: THREE.AnimationMixer = null!
 
 gltfLoader.load('/models/Fox/glTF/Fox.gltf', (gltf) => {
   mixer = new THREE.AnimationMixer(gltf.scene)
-  const action = mixer.clipAction(gltf.animations[0])
-  console.log(action)
+  let action = mixer.clipAction(gltf.animations[0]) // default is 'Survey'
   action.play()
+
+  // Debug
+  gui.add(debugObject, 'animation', ['Survey', 'Walk', 'Run']).onChange(() => {
+    action.stop()
+    action = mixer.clipAction(gltf.animations.find((animation) => animation.name === debugObject.animation))
+    action.play()
+  })
 
   gltf.scene.scale.setScalar(0.025)
   scene.add(gltf.scene)
