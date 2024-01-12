@@ -2,7 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/examples/jsm/Addons.js'
+import { GLTFLoader, RGBELoader } from 'three/examples/jsm/Addons.js'
 
 import GUI from 'lil-gui'
 
@@ -11,6 +11,7 @@ import GUI from 'lil-gui'
  */
 const gltfLoader = new GLTFLoader()
 const cubeTextureLoader = new THREE.CubeTextureLoader()
+const rgbeLoader = new RGBELoader()
 
 /**
  * Base
@@ -52,17 +53,25 @@ gui
   .step(0.001)
   .onChange(updateAllMaterials)
 
-// LDR cube texture (low dynamic range)
-const environmentMap = cubeTextureLoader.load([
-  '/environmentMaps/0/px.png',
-  '/environmentMaps/0/nx.png',
-  '/environmentMaps/0/py.png',
-  '/environmentMaps/0/ny.png',
-  '/environmentMaps/0/pz.png',
-  '/environmentMaps/0/nz.png',
-])
-scene.environment = environmentMap
-scene.background = environmentMap
+// // LDR (low dynamic range) cube texture
+// const environmentMap = cubeTextureLoader.load([
+//   '/environmentMaps/0/px.png',
+//   '/environmentMaps/0/nx.png',
+//   '/environmentMaps/0/py.png',
+//   '/environmentMaps/0/ny.png',
+//   '/environmentMaps/0/pz.png',
+//   '/environmentMaps/0/nz.png',
+// ])
+// scene.environment = environmentMap
+// scene.background = environmentMap
+
+// HDR (high dynamic range) RGBE equirectangular
+rgbeLoader.load('/environmentMaps/0/2k.hdr', (environmentMap) => {
+  environmentMap.mapping = THREE.EquirectangularReflectionMapping
+
+  scene.environment = environmentMap
+  scene.background = environmentMap
+})
 
 /**
  * Torus Knot
