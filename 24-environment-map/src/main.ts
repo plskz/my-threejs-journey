@@ -10,13 +10,16 @@ import GUI from 'lil-gui'
  * Loaders
  */
 const gltfLoader = new GLTFLoader()
+const cubeTextureLoader = new THREE.CubeTextureLoader()
 
 /**
  * Base
  */
 // Debug
 const gui = new GUI()
-gui.close()
+const global = {
+  envMapIntensity: 1,
+}
 
 // Canvas
 const canvas = document.querySelector<HTMLCanvasElement>('canvas.webgl')!
@@ -25,13 +28,54 @@ const canvas = document.querySelector<HTMLCanvasElement>('canvas.webgl')!
 const scene = new THREE.Scene()
 
 /**
+ * Update all materials
+ */
+const updateAllMaterials = () => {
+  scene.traverse((child) => {
+    if (child.isMesh && child.material.isMeshStandardMaterial) {
+      child.material.envMapIntensity = global.envMapIntensity
+    }
+  })
+}
+
+/**
+ * Environment map
+ */
+gui.add(scene, 'backgroundBlurriness').min(0).max(1).step(0.001)
+gui.add(scene, 'backgroundIntensity').min(0).max(10).step(0.001)
+
+// Global intensity
+gui
+  .add(global, 'envMapIntensity')
+  .min(0)
+  .max(10)
+  .step(0.001)
+  .onChange(updateAllMaterials)
+
+// LDR cube texture (low dynamic range)
+const environmentMap = cubeTextureLoader.load([
+  '/environmentMaps/0/px.png',
+  '/environmentMaps/0/nx.png',
+  '/environmentMaps/0/py.png',
+  '/environmentMaps/0/ny.png',
+  '/environmentMaps/0/pz.png',
+  '/environmentMaps/0/nz.png',
+])
+scene.environment = environmentMap
+scene.background = environmentMap
+
+/**
  * Torus Knot
  */
 const torusKnot = new THREE.Mesh(
   new THREE.TorusKnotGeometry(1, 0.4, 100, 16),
-  new THREE.MeshBasicMaterial()
+  new THREE.MeshStandardMaterial({
+    roughness: 0.1,
+    metalness: 1,
+    color: 0xaaaaaa,
+  })
 )
-torusKnot.position.y = 4
+torusKnot.position.set(-4, 4, 0)
 scene.add(torusKnot)
 
 /**
@@ -40,6 +84,8 @@ scene.add(torusKnot)
 gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
   gltf.scene.scale.setScalar(10)
   scene.add(gltf.scene)
+
+  updateAllMaterials()
 })
 
 /**
