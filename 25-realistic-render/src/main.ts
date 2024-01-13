@@ -11,6 +11,7 @@ import GUI from 'lil-gui'
  */
 const gltfLoader = new GLTFLoader()
 const rgbeLoader = new RGBELoader()
+const textureLoader = new THREE.TextureLoader()
 
 /**
  * Base
@@ -77,6 +78,7 @@ directionalLightFolder.add(directionalLight, 'castShadow')
 // Helper
 const directionalLightHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
 scene.add(directionalLightHelper)
+directionalLightHelper.visible = false
 directionalLightFolder.add(directionalLightHelper, 'visible').name('lightHelper')
 
 // Target
@@ -93,6 +95,52 @@ gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
 
   updateAllMaterials()
 })
+
+/**
+ * Floor
+ */
+const floorTextures = {
+  color: textureLoader.load('/textures/wood_cabinet_worn_long/wood_cabinet_worn_long_diff_1k.jpg'),
+  normal: textureLoader.load('/textures/wood_cabinet_worn_long/wood_cabinet_worn_long_nor_gl_1k.png'),
+  aoRoughtnessMetalness: textureLoader.load('/textures/wood_cabinet_worn_long/wood_cabinet_worn_long_arm_1k.jpg')
+}
+floorTextures.color.colorSpace = THREE.SRGBColorSpace
+
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(8, 8),
+  new THREE.MeshStandardMaterial({
+      map: floorTextures.color,
+      normalMap: floorTextures.normal,
+      aoMap: floorTextures.aoRoughtnessMetalness,
+      metalnessMap: floorTextures.aoRoughtnessMetalness,
+      roughnessMap: floorTextures.aoRoughtnessMetalness,
+  })
+)
+floor.rotation.x = -Math.PI * 0.5
+scene.add(floor)
+
+/**
+ * Wall
+ */
+const wallTextures = {
+  color: textureLoader.load('/textures/castle_brick_broken_06/castle_brick_broken_06_diff_1k.jpg'),
+  normal: textureLoader.load('/textures/castle_brick_broken_06/castle_brick_broken_06_nor_gl_1k.png'),
+  aoRoughtnessMetalness: textureLoader.load('/textures/castle_brick_broken_06/castle_brick_broken_06_arm_1k.jpg')
+}
+wallTextures.color.colorSpace = THREE.SRGBColorSpace
+
+const wall = new THREE.Mesh(
+  new THREE.PlaneGeometry(8, 8),
+  new THREE.MeshStandardMaterial({
+      map: wallTextures.color,
+      normalMap: wallTextures.normal,
+      aoMap: wallTextures.aoRoughtnessMetalness,
+      metalnessMap: wallTextures.aoRoughtnessMetalness,
+      roughnessMap: wallTextures.aoRoughtnessMetalness,
+  })
+)
+wall.position.set(0, 4, -4)
+scene.add(wall)
 
 /**
  * Sizes
