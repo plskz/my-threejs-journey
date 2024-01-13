@@ -32,6 +32,9 @@ const updateAllMaterials = () => {
   scene.traverse((child) => {
     if (child.isMesh && child.material.isMeshStandardMaterial) {
       child.material.envMapIntensity = global.envMapIntensity
+
+      child.castShadow = true
+      child.receiveShadow = true
     }
   })
 }
@@ -41,12 +44,7 @@ const updateAllMaterials = () => {
  */
 // Global intensity
 global.envMapIntensity = 1
-gui
-  .add(global, 'envMapIntensity')
-  .min(0)
-  .max(10)
-  .step(0.001)
-  .onChange(updateAllMaterials)
+gui.add(global, 'envMapIntensity').min(0).max(10).step(0.001).onChange(updateAllMaterials)
 
 // HDR (RGBE) equirectangular
 rgbeLoader.load('/environmentMaps/0/2k.hdr', (environmentMap) => {
@@ -55,6 +53,35 @@ rgbeLoader.load('/environmentMaps/0/2k.hdr', (environmentMap) => {
   scene.background = environmentMap
   scene.environment = environmentMap
 })
+
+/**
+ * Directional light
+ */
+const directionalLight = new THREE.DirectionalLight('#ffffff', 6)
+directionalLight.position.set(-4, 6.5, 2.5)
+scene.add(directionalLight)
+
+// GUI directional light
+const directionalLightFolder = gui.addFolder('directionalLight')
+directionalLightFolder.add(directionalLight, 'intensity').min(0).max(10).step(0.001).name('lightIntensity')
+directionalLightFolder.add(directionalLight.position, 'x').min(-10).max(10).step(0.001).name('lightX')
+directionalLightFolder.add(directionalLight.position, 'y').min(-10).max(10).step(0.001).name('lightY')
+directionalLightFolder.add(directionalLight.position, 'z').min(-10).max(10).step(0.001).name('lightZ')
+
+// Shadow
+directionalLight.castShadow = true
+directionalLight.shadow.camera.far = 15
+directionalLight.shadow.mapSize.set(1024, 1024)
+directionalLightFolder.add(directionalLight, 'castShadow')
+
+// Helper
+const directionalLightHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+scene.add(directionalLightHelper)
+directionalLightFolder.add(directionalLightHelper, 'visible').name('lightHelper')
+
+// Target
+directionalLight.target.position.set(0, 4, 0)
+directionalLight.target.updateMatrixWorld()
 
 /**
  * Models
@@ -121,14 +148,20 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.toneMapping = THREE.ReinhardToneMapping
 renderer.toneMappingExposure = 3
 
-gui.add(renderer, 'toneMapping', {
+// GUI tone mapping
+const toneMappingFolder = gui.addFolder('toneMapping')
+toneMappingFolder.add(renderer, 'toneMapping', {
   No: THREE.NoToneMapping,
   Linear: THREE.LinearToneMapping,
   Reinhard: THREE.ReinhardToneMapping,
   Cineon: THREE.CineonToneMapping,
   ACESFilmic: THREE.ACESFilmicToneMapping,
 })
-gui.add(renderer, 'toneMappingExposure').min(0).max(10).step(0.001)
+toneMappingFolder.add(renderer, 'toneMappingExposure').min(0).max(10).step(0.001)
+
+// Shadows
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 /**
  * Animate
