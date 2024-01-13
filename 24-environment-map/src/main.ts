@@ -2,7 +2,8 @@ import './style.css'
 import * as THREE from 'three'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { EXRLoader, GLTFLoader, RGBELoader } from 'three/examples/jsm/Addons.js'
+import { EXRLoader, GLTFLoader, GroundProjectedSkybox, RGBELoader } from 'three/examples/jsm/Addons.js'
+
 
 import GUI from 'lil-gui'
 
@@ -83,13 +84,29 @@ gui
 //   scene.environment = environmentMap
 // })
 
-// LDR equirectangular
-const environmentMap = textureLoader.load('/environmentMaps/blockadesLabsSkybox/anime_art_style_japan_streets_with_cherry_blossom_.jpg')
-environmentMap.mapping = THREE.EquirectangularReflectionMapping
-environmentMap.colorSpace = THREE.SRGBColorSpace
+// // LDR equirectangular
+// const environmentMap = textureLoader.load('/environmentMaps/blockadesLabsSkybox/anime_art_style_japan_streets_with_cherry_blossom_.jpg')
+// environmentMap.mapping = THREE.EquirectangularReflectionMapping
+// environmentMap.colorSpace = THREE.SRGBColorSpace
 
-scene.background = environmentMap
-scene.environment = environmentMap
+// scene.background = environmentMap
+// scene.environment = environmentMap
+
+// Ground projected skybox
+rgbeLoader.load('/environmentMaps/2/2k.hdr', (environmentMap) => {
+  environmentMap.mapping = THREE.EquirectangularReflectionMapping
+  scene.environment = environmentMap
+
+  // Skybox
+  const skybox = new GroundProjectedSkybox(environmentMap)
+  skybox.radius = 120
+  skybox.height = 11
+  skybox.scale.setScalar(50)
+
+  gui.add(skybox, 'radius', 1, 200, 0.1).name('skyboxRadius')
+  gui.add(skybox, 'height', 1, 100, 0.1).name('skyboxHeight')
+  scene.add(skybox)
+})
 
 /**
  * Torus Knot
