@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  gsap:
-    specifier: ^3.12.4
-    version: 3.12.4
   lil-gui:
     specifier: ^0.19.1
     version: 0.19.1
@@ -388,10 +385,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /gsap@3.12.4:
-    resolution: {integrity: sha512-1ByAq8dD0W4aBZ/JArgaQvc0gyUfkGkP8mgAQa0qZGdpOKlSOhOf+WNXjoLimKaKG3Z4Iu6DKZtnyszqQeyqWQ==}
-    dev: false
 
   /lil-gui@0.19.1:
     resolution: {integrity: sha512-9dbIg+UxS8RIROI6OH5gV2KrVE0Cn37bcLOQGF2GKN8ibTxDrUSLzzZfkQR82LnZsgs7DEZOOGfn3zhtd6hk0Q==}

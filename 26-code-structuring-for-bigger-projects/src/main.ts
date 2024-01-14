@@ -3,7 +3,6 @@ import * as THREE from 'three'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
-import { gsap } from 'gsap'
 import GUI from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 
