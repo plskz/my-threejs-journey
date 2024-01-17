@@ -25,7 +25,8 @@ const scene = new THREE.Scene()
  */
 const textureLoader = new THREE.TextureLoader()
 // const flagTexture = textureLoader.load('/textures/flag-french.jpg')
-const flagTexture = textureLoader.load('/textures/flag-philippines.jpg')
+// const flagTexture = textureLoader.load('/textures/flag-philippines.jpg')
+const flagTexture = textureLoader.load('/textures/pikachu.jpg')
 
 /**
  * Test mesh
@@ -56,7 +57,6 @@ const material = new THREE.ShaderMaterial({
 
 gui.add(material.uniforms.uFrequency.value, 'x').min(0).max(20).step(0.01).name('frequencyX')
 gui.add(material.uniforms.uFrequency.value, 'y').min(0).max(20).step(0.01).name('frequencyY')
-gui.addColor(material.uniforms.uColor, 'value').name('color')
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
