@@ -10,7 +10,10 @@ void main() {
   // float strength = vUv.y;
 
   // Pattern 5
-  float strength = 1.0 - vUv.y;
+  // float strength = 1.0 - vUv.y;
+
+  // Pattern 6
+  float strength = vUv.y * 10.0;
 
 
 
