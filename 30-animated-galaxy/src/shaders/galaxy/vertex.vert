@@ -2,6 +2,8 @@ uniform float uSize;
 
 attribute float aScale;
 
+varying vec3 vColor;
+
 void main() {
   /**
   * Position
@@ -13,8 +15,13 @@ void main() {
   gl_Position = projectedMatrix;
 
   /**
-  * Color
+  * Size
   */
   gl_PointSize = uSize * aScale;
   gl_PointSize *= (1.0 / - viewPosition.z);
+
+  /**
+  * Color
+  */
+  vColor = color;
 }
