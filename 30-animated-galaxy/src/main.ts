@@ -5,6 +5,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
 import GUI from 'lil-gui'
 
+import galaxyVertexShader from './shaders/galaxy/vertex.vert'
+import galaxyFragmentShader from './shaders/galaxy/fragment.frag'
+
 /**
  * Base
  */
@@ -33,7 +36,7 @@ const parameters = {
 }
 
 let geometry: THREE.BufferGeometry = null!
-let material: THREE.PointsMaterial = null!
+let material: THREE.ShaderMaterial = null!
 let points: THREE.Points = null!
 
 const generateGalaxy = () => {
@@ -60,8 +63,7 @@ const generateGalaxy = () => {
     // Position
     const radius = Math.random() * parameters.radius
 
-    const branchAngle =
-      ((i % parameters.branches) / parameters.branches) * Math.PI * 2
+    const branchAngle = ((i % parameters.branches) / parameters.branches) * Math.PI * 2
 
     const randomX = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * parameters.randomness * radius
     const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * parameters.randomness * radius
@@ -86,12 +88,12 @@ const generateGalaxy = () => {
   /**
    * Material
    */
-  material = new THREE.PointsMaterial({
-    size: parameters.size,
-    sizeAttenuation: true,
+  material = new THREE.ShaderMaterial({
     depthWrite: false,
     blending: THREE.AdditiveBlending,
     vertexColors: true,
+    vertexShader: galaxyVertexShader,
+    fragmentShader: galaxyFragmentShader,
   })
 
   /**
