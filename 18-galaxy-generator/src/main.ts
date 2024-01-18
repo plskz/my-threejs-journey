@@ -94,7 +94,7 @@ const generateGalaxy = () => {
   geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
 
   /**
-   * Geometry
+   * Material
    */
   material = new THREE.PointsMaterial({
     size: parameters.size,
