@@ -167,7 +167,7 @@ dotScreenPass.enabled = false
 effectComposer.addPass(dotScreenPass)
 
 const glitchPass = new GlitchPass()
-glitchPass.enabled = true
+glitchPass.enabled = false
 effectComposer.addPass(glitchPass)
 
 const rgbShiftPass = new ShaderPass(RGBShiftShader)
@@ -175,7 +175,43 @@ rgbShiftPass.enabled = false
 effectComposer.addPass(rgbShiftPass)
 
 const unrealBloomPass = new UnrealBloomPass()
+unrealBloomPass.strength = 0.3
+unrealBloomPass.radius = 1
+unrealBloomPass.threshold = 0.6
 effectComposer.addPass(unrealBloomPass)
+
+// Tint pass
+const tintShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    uTint: { value: null },
+  },
+  vertexShader: /* glsl */ `
+    varying vec2 vUv;
+
+    void main() {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+
+      vUv = uv;
+    }
+  `,
+  fragmentShader: /* glsl */ `
+    uniform sampler2D tDiffuse;
+    uniform vec3 uTint;
+
+    varying vec2 vUv;
+
+    void main() {
+      vec4 color = texture2D(tDiffuse, vUv);
+      color.rgb += uTint;
+      gl_FragColor = color;
+    }
+  `,
+}
+
+const tintPass = new ShaderPass(tintShader)
+tintPass.uniforms.uTint.value = new THREE.Vector3()
+effectComposer.addPass(tintPass)
 
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader)
 gammaCorrectionPass.enabled = true
@@ -205,6 +241,26 @@ gammaCorrectionPassFolder.add(gammaCorrectionPass, 'enabled')
 
 const unrealBloomPassFolder = gui.addFolder('UnrealBloomPass')
 unrealBloomPassFolder.add(unrealBloomPass, 'enabled')
+
+const tintPassFolder = gui.addFolder('TintPass')
+tintPassFolder
+  .add(tintPass.material.uniforms.uTint.value, 'x')
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name('red')
+tintPassFolder
+  .add(tintPass.material.uniforms.uTint.value, 'y')
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name('green')
+tintPassFolder
+  .add(tintPass.material.uniforms.uTint.value, 'z')
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name('blue')
 
 /**
  * Animate
