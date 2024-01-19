@@ -6,6 +6,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import {
   DotScreenPass,
   EffectComposer,
+  GammaCorrectionShader,
   GlitchPass,
   RGBShiftShader,
   RenderPass,
@@ -133,6 +134,7 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
 })
+renderer.outputColorSpace = THREE.SRGBColorSpace
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFShadowMap
 renderer.toneMapping = THREE.ReinhardToneMapping
@@ -161,6 +163,9 @@ effectComposer.addPass(glitchPass)
 const rgbShiftPass = new ShaderPass(RGBShiftShader)
 rgbShiftPass.enabled = false
 effectComposer.addPass(rgbShiftPass)
+
+const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader)
+effectComposer.addPass(gammaCorrectionPass)
 
 // Debug
 const dotScreenPassFolder = gui.addFolder('DotScreenPass')
