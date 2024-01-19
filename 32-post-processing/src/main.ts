@@ -15,6 +15,9 @@ import {
   UnrealBloomPass,
 } from 'three/examples/jsm/Addons.js'
 
+import { tintFragmentShader, tintVertexShader } from './shaders/tintPass'
+import { displacementFragmentShader, displacementVertexShader } from './shaders/displacementPass'
+
 import GUI from 'lil-gui'
 
 /**
@@ -191,27 +194,8 @@ const tintShader = {
     tDiffuse: { value: null },
     uTint: { value: null },
   },
-  vertexShader: /* glsl */ `
-    varying vec2 vUv;
-
-    void main() {
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-
-      vUv = uv;
-    }
-  `,
-  fragmentShader: /* glsl */ `
-    uniform sampler2D tDiffuse;
-    uniform vec3 uTint;
-
-    varying vec2 vUv;
-
-    void main() {
-      vec4 color = texture2D(tDiffuse, vUv);
-      color.rgb += uTint;
-      gl_FragColor = color;
-    }
-  `,
+  vertexShader: tintVertexShader,
+  fragmentShader: tintFragmentShader,
 }
 
 const tintPass = new ShaderPass(tintShader)
@@ -224,34 +208,8 @@ const displacementShader = {
     tDiffuse: { value: null },
     uNormalMap: { value: null },
   },
-  vertexShader: /* glsl */ `
-    varying vec2 vUv;
-
-    void main() {
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-
-      vUv = uv;
-    }
-  `,
-  fragmentShader: /* glsl */ `
-    uniform sampler2D tDiffuse;
-    uniform float uTime;
-    uniform sampler2D uNormalMap;
-
-    varying vec2 vUv;
-
-    void main() {
-      vec3 normalColor = texture2D(uNormalMap, vUv).xyz * 2.0 - 1.0;
-      vec2 newUv = vUv + normalColor.xy * 0.1;
-      vec4 color = texture2D(tDiffuse, newUv);
-
-      vec3 lightDirection = normalize(vec3(- 1.0, 1.0, 0.0));
-      float lightness = clamp(dot(normalColor, lightDirection), 0.0, 1.0);
-      color.rgb += lightness * 2.0;
-
-      gl_FragColor = color;
-    }
-  `,
+  vertexShader: displacementVertexShader,
+  fragmentShader: displacementFragmentShader,
 }
 
 const displacementPass = new ShaderPass(displacementShader)
