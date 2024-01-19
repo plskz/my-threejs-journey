@@ -7,7 +7,9 @@ import {
   DotScreenPass,
   EffectComposer,
   GlitchPass,
+  RGBShiftShader,
   RenderPass,
+  ShaderPass,
 } from 'three/examples/jsm/Addons.js'
 
 import GUI from 'lil-gui'
@@ -156,6 +158,10 @@ const glitchPass = new GlitchPass()
 glitchPass.enabled = false
 effectComposer.addPass(glitchPass)
 
+const rgbShiftPass = new ShaderPass(RGBShiftShader)
+rgbShiftPass.enabled = false
+effectComposer.addPass(rgbShiftPass)
+
 // Debug
 const dotScreenPassFolder = gui.addFolder('DotScreenPass')
 dotScreenPassFolder.add(dotScreenPass, 'enabled')
@@ -164,6 +170,8 @@ const glitchPassFolder = gui.addFolder('GlitchPass')
 glitchPassFolder.add(glitchPass, 'goWild')
 glitchPassFolder.add(glitchPass, 'enabled')
 
+const rgbShiftPassFolder = gui.addFolder('RGBShiftPass')
+rgbShiftPassFolder.add(rgbShiftPass, 'enabled')
 
 /**
  * Animate
