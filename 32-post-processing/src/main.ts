@@ -3,6 +3,8 @@ import * as THREE from 'three'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 
 import GUI from 'lil-gui'
 
@@ -133,6 +135,16 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 /**
+ * Post processing
+ */
+const effectComposer = new EffectComposer(renderer)
+effectComposer.setSize(sizes.width, sizes.height)
+effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+const renderPass = new RenderPass(scene, camera)
+effectComposer.addPass(renderPass)
+
+/**
  * Animate
  */
 const clock = new THREE.Clock()
@@ -144,7 +156,8 @@ const tick = () => {
   controls.update()
 
   // Render
-  renderer.render(scene, camera)
+  // renderer.render(scene, camera)
+  effectComposer.render()
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick)
