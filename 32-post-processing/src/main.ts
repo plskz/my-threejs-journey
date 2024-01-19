@@ -6,6 +6,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import {
   DotScreenPass,
   EffectComposer,
+  GlitchPass,
   RenderPass,
 } from 'three/examples/jsm/Addons.js'
 
@@ -148,7 +149,21 @@ const renderPass = new RenderPass(scene, camera)
 effectComposer.addPass(renderPass)
 
 const dotScreenPass = new DotScreenPass()
+dotScreenPass.enabled = false
 effectComposer.addPass(dotScreenPass)
+
+const glitchPass = new GlitchPass()
+glitchPass.enabled = false
+effectComposer.addPass(glitchPass)
+
+// Debug
+const dotScreenPassFolder = gui.addFolder('DotScreenPass')
+dotScreenPassFolder.add(dotScreenPass, 'enabled')
+
+const glitchPassFolder = gui.addFolder('GlitchPass')
+glitchPassFolder.add(glitchPass, 'goWild')
+glitchPassFolder.add(glitchPass, 'enabled')
+
 
 /**
  * Animate
