@@ -12,6 +12,7 @@ import {
   RenderPass,
   SMAAPass,
   ShaderPass,
+  UnrealBloomPass,
 } from 'three/examples/jsm/Addons.js'
 
 import GUI from 'lil-gui'
@@ -173,6 +174,9 @@ const rgbShiftPass = new ShaderPass(RGBShiftShader)
 rgbShiftPass.enabled = false
 effectComposer.addPass(rgbShiftPass)
 
+const unrealBloomPass = new UnrealBloomPass()
+effectComposer.addPass(unrealBloomPass)
+
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader)
 gammaCorrectionPass.enabled = true
 effectComposer.addPass(gammaCorrectionPass)
@@ -198,6 +202,9 @@ rgbShiftPassFolder.add(rgbShiftPass, 'enabled')
 
 const gammaCorrectionPassFolder = gui.addFolder('GammaCorrectionPass')
 gammaCorrectionPassFolder.add(gammaCorrectionPass, 'enabled')
+
+const unrealBloomPassFolder = gui.addFolder('UnrealBloomPass')
+unrealBloomPassFolder.add(unrealBloomPass, 'enabled')
 
 /**
  * Animate
