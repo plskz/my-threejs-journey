@@ -10,6 +10,7 @@ import {
   GlitchPass,
   RGBShiftShader,
   RenderPass,
+  SMAAPass,
   ShaderPass,
 } from 'three/examples/jsm/Addons.js'
 
@@ -149,7 +150,11 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 /**
  * Post processing
  */
-const effectComposer = new EffectComposer(renderer)
+const renderTarget = new THREE.WebGLRenderTarget(600, 800, {
+  samples: renderer.getPixelRatio() === 1 ? 2 : 0,
+})
+
+const effectComposer = new EffectComposer(renderer, renderTarget)
 effectComposer.setSize(sizes.width, sizes.height)
 effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
@@ -161,7 +166,7 @@ dotScreenPass.enabled = false
 effectComposer.addPass(dotScreenPass)
 
 const glitchPass = new GlitchPass()
-glitchPass.enabled = false
+glitchPass.enabled = true
 effectComposer.addPass(glitchPass)
 
 const rgbShiftPass = new ShaderPass(RGBShiftShader)
@@ -169,8 +174,16 @@ rgbShiftPass.enabled = false
 effectComposer.addPass(rgbShiftPass)
 
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader)
-gammaCorrectionPass.enabled = false
+gammaCorrectionPass.enabled = true
 effectComposer.addPass(gammaCorrectionPass)
+
+// SMAA pass
+if (renderer.getPixelRatio() === 1 && !renderer.capabilities.isWebGL2) {
+  const smaaPass = new SMAAPass(sizes.width, sizes.height)
+  effectComposer.addPass(smaaPass)
+
+  console.log('Using SMAA')
+}
 
 // Debug
 const dotScreenPassFolder = gui.addFolder('DotScreenPass')
