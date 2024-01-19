@@ -2,7 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
 import GUI from 'lil-gui'
 
@@ -71,6 +71,32 @@ const material = new THREE.MeshStandardMaterial({
   map: mapTexture,
   normalMap: normalTexture,
 })
+
+material.onBeforeCompile = (shader) => {
+  shader.vertexShader = shader.vertexShader.replace(
+    '#include <common>',
+    `
+        #include <common>
+
+        mat2 get2dRotateMatrix(float _angle)
+        {
+            return mat2(cos(_angle), - sin(_angle), sin(_angle), cos(_angle));
+        }
+    `
+  )
+
+  shader.vertexShader = shader.vertexShader.replace(
+    '#include <begin_vertex>',
+    /* glsl */ `
+      #include <begin_vertex>
+
+      float angle = position.y * 0.9;
+      mat2 rotateMatrix = get2dRotateMatrix(angle);
+
+      transformed.xz = rotateMatrix * transformed.xz;
+    `
+  )
+}
 
 /**
  * Models
