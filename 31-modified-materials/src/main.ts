@@ -78,10 +78,14 @@ const depthMaterial = new THREE.MeshDepthMaterial({
 
 const customUniforms = {
   uTime: { value: 0 },
+  uTimeSpeed: { value: 1 },
 }
+
+gui.add(customUniforms.uTimeSpeed, 'value').min(0).max(10).step(0.01).name('uTimeSpeed')
 
 material.onBeforeCompile = (shader) => {
   shader.uniforms.uTime = customUniforms.uTime
+  shader.uniforms.uTimeSpeed = customUniforms.uTimeSpeed
 
   shader.vertexShader = shader.vertexShader.replace(
     '#include <common>',
@@ -89,6 +93,7 @@ material.onBeforeCompile = (shader) => {
         #include <common>
 
         uniform float uTime;
+        uniform float uTimeSpeed;
 
         mat2 get2dRotateMatrix(float _angle) {
           return mat2(cos(_angle), - sin(_angle), sin(_angle), cos(_angle));
@@ -102,7 +107,7 @@ material.onBeforeCompile = (shader) => {
     /* glsl */ `
         #include <beginnormal_vertex>
 
-        float angle = sin(position.y + uTime) * 0.3;
+        float angle = sin(position.y + uTime * uTimeSpeed) * 0.3;
         mat2 rotateMatrix = get2dRotateMatrix(angle);
 
         objectNormal.xz = rotateMatrix * objectNormal.xz;
@@ -121,6 +126,7 @@ material.onBeforeCompile = (shader) => {
 
 depthMaterial.onBeforeCompile = (shader) => {
   shader.uniforms.uTime = customUniforms.uTime
+  shader.uniforms.uTimeSpeed = customUniforms.uTimeSpeed
 
   shader.vertexShader = shader.vertexShader.replace(
     '#include <common>',
@@ -128,6 +134,7 @@ depthMaterial.onBeforeCompile = (shader) => {
         #include <common>
 
         uniform float uTime;
+        uniform float uTimeSpeed;
 
         mat2 get2dRotateMatrix(float _angle) {
           return mat2(cos(_angle), - sin(_angle), sin(_angle), cos(_angle));
@@ -141,7 +148,7 @@ depthMaterial.onBeforeCompile = (shader) => {
     /* glsl */ `
       #include <begin_vertex>
 
-      float angle = sin(position.y + uTime) * 0.3;
+      float angle = sin(position.y + uTime * uTimeSpeed) * 0.3;
       mat2 rotateMatrix = get2dRotateMatrix(angle);
 
       transformed.xz = rotateMatrix * transformed.xz;
