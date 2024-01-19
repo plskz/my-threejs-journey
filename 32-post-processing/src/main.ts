@@ -159,21 +159,26 @@ const effectComposer = new EffectComposer(renderer, renderTarget)
 effectComposer.setSize(sizes.width, sizes.height)
 effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+// Render pass
 const renderPass = new RenderPass(scene, camera)
 effectComposer.addPass(renderPass)
 
+// Dot screen pass
 const dotScreenPass = new DotScreenPass()
 dotScreenPass.enabled = false
 effectComposer.addPass(dotScreenPass)
 
+// Glitch pass
 const glitchPass = new GlitchPass()
 glitchPass.enabled = false
 effectComposer.addPass(glitchPass)
 
+// RGB shift pass
 const rgbShiftPass = new ShaderPass(RGBShiftShader)
 rgbShiftPass.enabled = false
 effectComposer.addPass(rgbShiftPass)
 
+// Unreal bloom pass
 const unrealBloomPass = new UnrealBloomPass()
 unrealBloomPass.strength = 0.3
 unrealBloomPass.radius = 1
@@ -213,6 +218,44 @@ const tintPass = new ShaderPass(tintShader)
 tintPass.uniforms.uTint.value = new THREE.Vector3()
 effectComposer.addPass(tintPass)
 
+// Displacement pass
+const displacementShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    uTime: { value: null },
+  },
+  vertexShader: /* glsl */ `
+    varying vec2 vUv;
+
+    void main() {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+
+      vUv = uv;
+    }
+  `,
+  fragmentShader: /* glsl */ `
+    uniform sampler2D tDiffuse;
+    uniform float uTime;
+
+    varying vec2 vUv;
+
+    void main() {
+      vec2 newUv = vec2(
+        vUv.x,
+        vUv.y + sin(vUv.x * 10.0 + uTime) * 0.1
+      );
+      vec4 color = texture2D(tDiffuse, newUv);
+
+      gl_FragColor = color;
+    }
+  `,
+}
+
+const displacementPass = new ShaderPass(displacementShader)
+displacementPass.material.uniforms.uTime.value = 0
+effectComposer.addPass(displacementPass)
+
+// Gamma correction pass
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader)
 gammaCorrectionPass.enabled = true
 effectComposer.addPass(gammaCorrectionPass)
@@ -269,6 +312,9 @@ const clock = new THREE.Clock()
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime()
+
+  // Update passes
+  displacementPass.material.uniforms.uTime.value = elapsedTime
 
   // Update controls
   controls.update()
