@@ -108,6 +108,10 @@ window.addEventListener('resize', () => {
   // Update renderer
   renderer.setSize(sizes.width, sizes.height)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+  // Update effect composer
+  effectComposer.setSize(sizes.width, sizes.height)
+  effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 /**
@@ -165,6 +169,7 @@ rgbShiftPass.enabled = false
 effectComposer.addPass(rgbShiftPass)
 
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader)
+gammaCorrectionPass.enabled = false
 effectComposer.addPass(gammaCorrectionPass)
 
 // Debug
@@ -177,6 +182,9 @@ glitchPassFolder.add(glitchPass, 'enabled')
 
 const rgbShiftPassFolder = gui.addFolder('RGBShiftPass')
 rgbShiftPassFolder.add(rgbShiftPass, 'enabled')
+
+const gammaCorrectionPassFolder = gui.addFolder('GammaCorrectionPass')
+gammaCorrectionPassFolder.add(gammaCorrectionPass, 'enabled')
 
 /**
  * Animate
