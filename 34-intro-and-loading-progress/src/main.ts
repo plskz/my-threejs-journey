@@ -4,23 +4,29 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 
-import GUI from 'lil-gui'
 import { gsap } from 'gsap'
 
 /**
  * Loaders
  */
+const loadingBar = document.querySelector<HTMLDivElement>('.loading-bar')!
+
 const loadingManager = new THREE.LoadingManager(
   // Loaded
   () => {
-    console.log('loaded')
-    gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0 })
+    gsap.delayedCall(0.5, () => {
+      gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0 })
+      loadingBar.classList.add('ended')
+      loadingBar.style.transform = ''
+    })
   },
   // Progress
-  () => {
-    console.log('progress')
+  (_, loaded, total) => {
+    const progressRatio = loaded / total
+    loadingBar.style.transform = `scaleX(${progressRatio})`
   }
 )
+
 const gltfLoader = new GLTFLoader(loadingManager)
 const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
 
