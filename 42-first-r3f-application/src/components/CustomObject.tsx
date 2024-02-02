@@ -14,7 +14,7 @@ export default function CustomObject() {
     }
 
     return positions;
-  }, []);
+  }, [verticesCount]);
 
   useEffect(() => {
     geometryRef.current.computeVertexNormals();
