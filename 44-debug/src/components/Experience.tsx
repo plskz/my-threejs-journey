@@ -2,8 +2,8 @@ import { OrbitControls } from "@react-three/drei";
 import { button, useControls } from "leva";
 import { Perf } from "r3f-perf";
 
-export default function Experience() {
-  const sphereConfig = useControls("Sphere", {
+const Sphere = () => {
+  const { position, color, visible } = useControls("Sphere", {
     position: {
       value: { x: -2, y: 0 },
       step: 0.01,
@@ -15,7 +15,16 @@ export default function Experience() {
     choices: { options: ["a", "b", "c"] },
   });
 
-  const boxConfig = useControls("Box", {
+  return (
+    <mesh position={[position.x, position.y, 0]} visible={visible}>
+      <sphereGeometry />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  );
+};
+
+const Box = () => {
+  const { position, color, visible } = useControls("Box", {
     position: {
       value: { x: 2, y: 0 },
       step: 0.01,
@@ -26,6 +35,15 @@ export default function Experience() {
   });
 
   return (
+    <mesh position={[position.x, position.y, 0]} scale={1.5} visible={visible}>
+      <boxGeometry />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  );
+};
+
+export default function Experience() {
+  return (
     <>
       {/* doesn't work */}
       {/* <Perf position="top-left" /> */}
@@ -35,22 +53,8 @@ export default function Experience() {
       <directionalLight position={[1, 2, 3]} intensity={4.5} />
       <ambientLight intensity={1.5} />
 
-      <mesh
-        position={[sphereConfig.position.x, sphereConfig.position.y, 0]}
-        visible={sphereConfig.visible}
-      >
-        <sphereGeometry />
-        <meshStandardMaterial color={sphereConfig.color} />
-      </mesh>
-
-      <mesh
-        position={[boxConfig.position.x, boxConfig.position.y, 0]}
-        scale={1.5}
-        visible={boxConfig.visible}
-      >
-        <boxGeometry />
-        <meshStandardMaterial color={boxConfig.color} />
-      </mesh>
+      <Sphere />
+      <Box />
 
       <mesh position-y={-1} rotation-x={-Math.PI * 0.5} scale={10}>
         <planeGeometry />
