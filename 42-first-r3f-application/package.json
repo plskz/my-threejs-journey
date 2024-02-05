@@ -1,5 +1,6 @@
 {
   "name": "42-first-r3f-application",
+  "author": "plskz",
   "version": "0.1.0",
   "private": true,
   "scripts": {
