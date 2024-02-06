@@ -31,12 +31,14 @@ export default function Experience() {
         <meshStandardMaterial color="greenyellow" />
       </mesh>
 
-      <Suspense fallback={<Placeholder position-y={0.5} scale={[2, 3, 2]} />}>
+      <Suspense fallback={<Placeholder position-y={-1} scale={[2, 3, 2]} />}>
         {/* <Model /> */}
-        <Hamburger scale={0.2} />
+        <Hamburger scale={0.2} position-y={-1} />
       </Suspense>
-
-      <Fox />
+      
+      <Suspense fallback={<Placeholder scale={[1, 1, 2]} position={[-2.5, 0, 2.5]} rotation-y={0.5}/>}>
+        <Fox />
+      </Suspense>
     </>
   );
 }

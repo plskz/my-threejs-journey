@@ -24,9 +24,11 @@ export default function Fox() {
   return (
     <primitive
       scale={0.02}
-      position={[-2.5, 0, 2.5]}
+      position={[-2.5, -1, 2.5]}
       rotation-y={0.5}
       object={fox.scene}
     />
   );
 }
+
+useGLTF.preload("./Fox/glTF/Fox.gltf");
