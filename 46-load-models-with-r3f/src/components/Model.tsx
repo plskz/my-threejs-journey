@@ -2,15 +2,11 @@ import { useLoader } from "@react-three/fiber";
 import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 
 export default function Model() {
-  const model = useLoader(
-    GLTFLoader,
-    "./FlightHelmet/glTF/FlightHelmet.gltf",
-    (loader) => {
-      const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath("./draco/");
-      loader.setDRACOLoader(dracoLoader);
-    },
-  );
+  const model = useLoader(GLTFLoader, "./hamburger.glb", (loader) => {
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath("./draco/");
+    loader.setDRACOLoader(dracoLoader);
+  });
 
-  return <primitive object={model.scene} scale={5} position-y={-1} />;
+  return <primitive object={model.scene} scale={0.35} />;
 }
