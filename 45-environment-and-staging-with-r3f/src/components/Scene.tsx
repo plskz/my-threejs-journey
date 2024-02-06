@@ -1,5 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import Experience from "./Experience";
+import MyStage from "./MyStage";
 
 export default function Scene() {
   return (
@@ -12,7 +13,8 @@ export default function Scene() {
         position: [-8, 6, 12],
       }}
     >
-      <Experience />
+      {/* <Experience /> */}
+      <MyStage />
     </Canvas>
   );
 }
