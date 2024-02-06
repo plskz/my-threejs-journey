@@ -4,7 +4,7 @@ import Experience from "./Experience";
 export default function Scene() {
   return (
     <Canvas
-      shadows
+      shadows={false}
       camera={{
         fov: 45,
         near: 0.1,
