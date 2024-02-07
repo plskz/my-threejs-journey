@@ -5,8 +5,13 @@ import {
   useMatcapTexture,
 } from "@react-three/drei";
 import { Perf } from "r3f-perf";
+import { useState } from "react";
+import { MeshMatcapMaterial, TorusGeometry } from "three";
 
 export default function Experience() {
+  const [torusGeometry, setTorusGeometry] = useState<TorusGeometry>(null!);
+  const [material, setMaterial] = useState<MeshMatcapMaterial>(null!);
+
   const [matcap] = useMatcapTexture(
     337, // index of the matcap texture https://github.com/emmelleppi/matcaps/blob/master/matcap-list.json (0 to 640)
     256, // size of the texture ( 64, 128, 256, 512, 1024 )
@@ -17,6 +22,11 @@ export default function Experience() {
       <Perf position="top-left" />
 
       <OrbitControls makeDefault />
+
+      {/* @ts-expect-error ... */}
+      <torusGeometry ref={setTorusGeometry} />
+      {/* @ts-expect-error ... */}
+      <meshMatcapMaterial ref={setMaterial} matcap={matcap} />
 
       <Center>
         <Text3D
@@ -29,15 +39,17 @@ export default function Experience() {
           bevelSize={0.02}
           bevelOffset={0}
           bevelSegments={5}
+          material={material}
         >
           HELLO R3F
-          <meshMatcapMaterial matcap={matcap} />
         </Text3D>
       </Center>
 
       {[...Array(100)].map((_, i) => (
         <mesh
           key={i}
+          geometry={torusGeometry}
+          material={material}
           position={[
             (Math.random() - 0.5) * 10,
             (Math.random() - 0.5) * 10,
@@ -45,10 +57,7 @@ export default function Experience() {
           ]}
           rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
           scale={0.2 + Math.random() * 0.2}
-        >
-          <torusGeometry />
-          <meshMatcapMaterial matcap={matcap} />
-        </mesh>
+        ></mesh>
       ))}
     </>
   );
