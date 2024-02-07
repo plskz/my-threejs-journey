@@ -16,7 +16,7 @@ const material = new MeshMatcapMaterial();
 export default function Experience() {
   // const [torusGeometry, setTorusGeometry] = useState<TorusGeometry>(null!);
   // const [material, setMaterial] = useState<MeshMatcapMaterial>(null!);
-  const donutsGroup = useRef<THREE.Group>(null!);
+  const donuts = useRef<THREE.Mesh[]>([]);
 
   const [matcap] = useMatcapTexture(
     337, // index of the matcap texture https://github.com/emmelleppi/matcaps/blob/master/matcap-list.json (0 to 640)
@@ -32,8 +32,8 @@ export default function Experience() {
   });
 
   useFrame((_, delta) => {
-    for (const donuts of donutsGroup.current.children) {
-      donuts.rotation.y += 0.2 * delta;
+    for (const donut of donuts.current) {
+      donut.rotation.y += 0.2 * delta;
     }
   });
 
@@ -62,23 +62,21 @@ export default function Experience() {
           HELLO R3F
         </Text3D>
       </Center>
-
-      <group ref={donutsGroup}>
-        {[...Array(100)].map((_, i) => (
-          <mesh
-            key={i}
-            geometry={torusGeometry}
-            material={material}
-            position={[
-              (Math.random() - 0.5) * 10,
-              (Math.random() - 0.5) * 10,
-              (Math.random() - 0.5) * 10,
-            ]}
-            rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
-            scale={0.2 + Math.random() * 0.2}
-          ></mesh>
-        ))}
-      </group>
+      {[...Array(100)].map((_, i) => (
+        <mesh
+          key={i}
+          ref={(element) => (donuts.current[i] = element!)}
+          geometry={torusGeometry}
+          material={material}
+          position={[
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 10,
+          ]}
+          rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
+          scale={0.2 + Math.random() * 0.2}
+        ></mesh>
+      ))}
     </>
   );
 }
