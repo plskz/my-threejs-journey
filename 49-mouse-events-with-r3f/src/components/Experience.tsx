@@ -1,5 +1,5 @@
-import { useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { BoxGeometry, MeshStandardMaterial } from "three";
 
@@ -30,7 +30,14 @@ export default function Experience() {
         <meshStandardMaterial color="orange" />
       </mesh>
 
-      <mesh ref={cube} position-x={2} scale={1.5} onClick={cubeHandler}>
+      <mesh
+        ref={cube}
+        position-x={2}
+        scale={1.5}
+        onClick={cubeHandler}
+        onPointerEnter={() => (document.body.style.cursor = "pointer")}
+        onPointerLeave={() => (document.body.style.cursor = "default")}
+      >
         <boxGeometry />
         <meshStandardMaterial color="mediumpurple" />
       </mesh>
