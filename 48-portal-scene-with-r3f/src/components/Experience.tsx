@@ -6,12 +6,13 @@ import {
   useGLTF,
   useTexture,
 } from "@react-three/drei";
-import { GLTF } from "three-stdlib";
-import portalVertexShader from "../shaders/portal/vertex.vert";
-import portalFragmentShader from "../shaders/portal/fragment.frag";
-import * as THREE from "three";
 import { extend, useFrame } from "@react-three/fiber";
+import { useControls } from "leva";
 import { useRef } from "react";
+import * as THREE from "three";
+import { GLTF } from "three-stdlib";
+import portalFragmentShader from "../shaders/portal/fragment.frag";
+import portalVertexShader from "../shaders/portal/vertex.vert";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -48,8 +49,17 @@ export default function Experience() {
 
   const portalMaterial = useRef<THREE.ShaderMaterial>(null!);
 
+  const { colorStart, colorEnd } = useControls({
+    colorStart: "#ffffff",
+    colorEnd: "#000000",
+  });
+
   useFrame((_, delta) => {
     portalMaterial.current.uniforms.uTime.value += delta;
+
+    // leva: update portal color
+    portalMaterial.current.uniforms.uColorStart.value.set(colorStart);
+    portalMaterial.current.uniforms.uColorEnd.value.set(colorEnd);
   });
 
   return (
