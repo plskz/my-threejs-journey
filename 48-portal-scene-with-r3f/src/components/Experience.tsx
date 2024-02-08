@@ -2,10 +2,16 @@ import {
   Center,
   OrbitControls,
   Sparkles,
+  shaderMaterial,
   useGLTF,
   useTexture,
 } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import portalVertexShader from "../shaders/portal/vertex.vert";
+import portalFragmentShader from "../shaders/portal/fragment.frag";
+import * as THREE from "three";
+import { extend, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -17,10 +23,34 @@ type GLTFResult = GLTF & {
   materials: {};
 };
 
+const PortalMaterial = shaderMaterial(
+  {
+    uTime: 0,
+    uColorStart: new THREE.Color("#ffffff"),
+    uColorEnd: new THREE.Color("#000000"),
+  },
+  portalVertexShader,
+  portalFragmentShader,
+);
+
+extend({ PortalMaterial });
+
+declare module "@react-three/fiber" {
+  interface ThreeElements {
+    portalMaterial: JSX.IntrinsicElements["shaderMaterial"];
+  }
+}
+
 export default function Experience() {
   const { nodes } = useGLTF("./model/portal.glb") as GLTFResult;
   const bakedTexture = useTexture("./model/baked.jpg");
   bakedTexture.flipY = false;
+
+  const portalMaterial = useRef<THREE.ShaderMaterial>(null!);
+
+  useFrame((_, delta) => {
+    portalMaterial.current.uniforms.uTime.value += delta;
+  });
 
   return (
     <>
@@ -50,7 +80,9 @@ export default function Experience() {
           geometry={nodes.portalLight.geometry}
           position={nodes.portalLight.position}
           rotation={nodes.portalLight.rotation}
-        ></mesh>
+        >
+          <portalMaterial ref={portalMaterial} />
+        </mesh>
 
         <Sparkles
           size={6}
