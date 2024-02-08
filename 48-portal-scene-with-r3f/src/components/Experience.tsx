@@ -1,4 +1,10 @@
-import { Center, OrbitControls, useGLTF, useTexture } from "@react-three/drei";
+import {
+  Center,
+  OrbitControls,
+  Sparkles,
+  useGLTF,
+  useTexture,
+} from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
@@ -45,6 +51,14 @@ export default function Experience() {
           position={nodes.portalLight.position}
           rotation={nodes.portalLight.rotation}
         ></mesh>
+
+        <Sparkles
+          size={6}
+          scale={[4, 2, 4]}
+          position-y={1}
+          speed={0.2}
+          count={40}
+        />
       </Center>
     </>
   );

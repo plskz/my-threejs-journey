@@ -5,6 +5,7 @@ import { Perf } from "r3f-perf";
 export default function Scene() {
   return (
     <Canvas
+      flat
       camera={{
         fov: 45,
         near: 0.1,
