@@ -1,7 +1,12 @@
-import { OrbitControls, useCursor, useGLTF } from "@react-three/drei";
+import {
+  OrbitControls,
+  meshBounds,
+  useCursor,
+  useGLTF,
+} from "@react-three/drei";
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { BoxGeometry, MeshStandardMaterial, Object3D } from "three";
+import { BoxGeometry, MeshStandardMaterial } from "three";
 
 const generateRandomColor = () => {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
@@ -37,6 +42,7 @@ export default function Experience() {
 
       <mesh
         ref={cube}
+        raycast={meshBounds}
         position-x={2}
         scale={1.5}
         onClick={cubeHandler}
