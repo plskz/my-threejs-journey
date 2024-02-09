@@ -27,7 +27,7 @@ export default function Experience() {
 
   return (
     <>
-      <color attach="background" args={["#000000"]} />
+      <color attach="background" args={["#ffffff"]} />
 
       <EffectComposer disableNormalPass>
         {/* <Vignette
@@ -52,6 +52,7 @@ export default function Experience() {
         <Drunk ref={drunkRef} frequency={2} amplitude={0.1} />
         <ToneMapping />
       </EffectComposer>
+
       <Perf position="top-left" />
 
       <OrbitControls makeDefault />
