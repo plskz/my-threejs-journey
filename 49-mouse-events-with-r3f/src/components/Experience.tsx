@@ -64,6 +64,7 @@ export default function Experience() {
         position-y={0.5}
         onClick={(event: ThreeEvent<MouseEvent>) => {
           event.stopPropagation();
+          console.log(event.object.name);
         }}
       />
     </>
