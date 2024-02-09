@@ -12,8 +12,12 @@ import {
 import { BlendFunction, DepthEffect, GlitchMode } from "postprocessing";
 import { useControls } from "leva";
 import Drunk from "./Drunk";
+import { useEffect, useRef } from "react";
+import DrunkEffect from "./DrunkEffect";
 
 export default function Experience() {
+  const drunkRef = useRef<DrunkEffect>(null!);
+
   const { currentBlendFunction } = useControls({
     currentBlendFunction: {
       options: Object.keys(BlendFunction),
@@ -45,7 +49,7 @@ export default function Experience() {
           bokehScale={6}
         /> */}
 
-        <Drunk frequency={2} amplitude={0.1} />
+        <Drunk ref={drunkRef} frequency={2} amplitude={0.1} />
         <ToneMapping />
       </EffectComposer>
       <Perf position="top-left" />
