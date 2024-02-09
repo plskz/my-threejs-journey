@@ -8,17 +8,18 @@ const generateRandomColor = () => {
 };
 
 export default function Experience() {
-  const cube = useRef<THREE.Mesh<BoxGeometry, MeshStandardMaterial>>(null!);
+  // hover
   const [hovered, set] = useState(false);
   useCursor(hovered);
 
+  // cube
+  const cube = useRef<THREE.Mesh<BoxGeometry, MeshStandardMaterial>>(null!);
+  const cubeHandler = () => {
+    cube.current.material.color.set(generateRandomColor());
+  };
   useFrame((_, delta) => {
     cube.current.rotation.y += delta * 0.2;
   });
-
-  const cubeHandler = () => {
-    console.log(cube.current.material.color.set(generateRandomColor()));
-  };
 
   return (
     <>
