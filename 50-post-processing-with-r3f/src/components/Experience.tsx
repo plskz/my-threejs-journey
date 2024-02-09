@@ -11,6 +11,7 @@ import {
 } from "@react-three/postprocessing";
 import { BlendFunction, DepthEffect, GlitchMode } from "postprocessing";
 import { useControls } from "leva";
+import Drunk from "./Drunk";
 
 export default function Experience() {
   const { currentBlendFunction } = useControls({
@@ -23,6 +24,7 @@ export default function Experience() {
   return (
     <>
       <color attach="background" args={["#000000"]} />
+
       <EffectComposer disableNormalPass>
         {/* <Vignette
           offset={0.3}
@@ -37,12 +39,13 @@ export default function Experience() {
         /> */}
         {/* <Noise premultiply blendFunction={BlendFunction[currentBlendFunction]} /> */}
         {/* <Bloom luminanceThreshold={1.1} mipmapBlur /> */}
-        <DepthOfField
+        {/* <DepthOfField
           focusDistance={0.025}
           focalLength={0.025}
           bokehScale={6}
-        />
+        /> */}
 
+        <Drunk frequency={2} amplitude={0.1} />
         <ToneMapping />
       </EffectComposer>
       <Perf position="top-left" />
