@@ -2,13 +2,14 @@ import { OrbitControls } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 import {
   Bloom,
+  DepthOfField,
   EffectComposer,
   Glitch,
   Noise,
   ToneMapping,
   Vignette,
 } from "@react-three/postprocessing";
-import { BlendFunction, GlitchMode } from "postprocessing";
+import { BlendFunction, DepthEffect, GlitchMode } from "postprocessing";
 import { useControls } from "leva";
 
 export default function Experience() {
@@ -35,7 +36,12 @@ export default function Experience() {
           mode={GlitchMode.CONSTANT_MILD}
         /> */}
         {/* <Noise premultiply blendFunction={BlendFunction[currentBlendFunction]} /> */}
-        <Bloom luminanceThreshold={1.1} mipmapBlur />
+        {/* <Bloom luminanceThreshold={1.1} mipmapBlur /> */}
+        <DepthOfField
+          focusDistance={0.025}
+          focalLength={0.025}
+          bokehScale={6}
+        />
 
         <ToneMapping />
       </EffectComposer>
