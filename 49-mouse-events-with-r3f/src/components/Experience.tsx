@@ -1,13 +1,15 @@
-import { OrbitControls, useCursor } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { OrbitControls, useCursor, useGLTF } from "@react-three/drei";
+import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { BoxGeometry, MeshStandardMaterial } from "three";
+import { BoxGeometry, MeshStandardMaterial, Object3D } from "three";
 
 const generateRandomColor = () => {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 };
 
 export default function Experience() {
+  const hamburger = useGLTF("./hamburger.glb");
+
   // hover
   const [hovered, set] = useState(false);
   useCursor(hovered);
@@ -49,6 +51,15 @@ export default function Experience() {
         <planeGeometry />
         <meshStandardMaterial color="greenyellow" />
       </mesh>
+
+      <primitive
+        object={hamburger.scene}
+        scale={0.25}
+        position-y={0.5}
+        onClick={(event: ThreeEvent<MouseEvent>) => {
+          event.stopPropagation();
+        }}
+      />
     </>
   );
 }
