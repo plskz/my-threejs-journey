@@ -28,6 +28,30 @@ export default function Experience() {
   const drunkProps = useControls("Drunk Effect", {
     frequency: { value: 2, min: 1, max: 20 },
     amplitude: { value: 0.1, min: 0, max: 1 },
+    blendFunction: {
+      options: {
+        NORMAL: BlendFunction.NORMAL,
+        ADD: BlendFunction.ADD,
+        SUBTRACT: BlendFunction.SUBTRACT,
+        MULTIPLY: BlendFunction.MULTIPLY,
+        DIVIDE: BlendFunction.DIVIDE,
+        SCREEN: BlendFunction.SCREEN,
+        OVERLAY: BlendFunction.OVERLAY,
+        DARKEN: BlendFunction.DARKEN,
+        LIGHTEN: BlendFunction.LIGHTEN,
+        COLOR_DODGE: BlendFunction.COLOR_DODGE,
+        COLOR_BURN: BlendFunction.COLOR_BURN,
+        HARD_LIGHT: BlendFunction.HARD_LIGHT,
+        SOFT_LIGHT: BlendFunction.SOFT_LIGHT,
+        DIFFERENCE: BlendFunction.DIFFERENCE,
+        EXCLUSION: BlendFunction.EXCLUSION,
+        HUE: BlendFunction.HUE,
+        SATURATION: BlendFunction.SATURATION,
+        COLOR: BlendFunction.COLOR,
+        LUMINOSITY: BlendFunction.LUMINOSITY,
+      },
+      value: BlendFunction.DARKEN,
+    },
   });
 
   return (
