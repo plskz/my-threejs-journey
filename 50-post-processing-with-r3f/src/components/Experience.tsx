@@ -1,6 +1,7 @@
 import { OrbitControls } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 import {
+  Bloom,
   EffectComposer,
   Glitch,
   Noise,
@@ -20,7 +21,7 @@ export default function Experience() {
 
   return (
     <>
-      <color attach="background" args={["#ffffff"]} />
+      <color attach="background" args={["#000000"]} />
       <EffectComposer disableNormalPass>
         {/* <Vignette
           offset={0.3}
@@ -33,7 +34,8 @@ export default function Experience() {
           strength={[0.2, 0.4]}
           mode={GlitchMode.CONSTANT_MILD}
         /> */}
-        <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} />
+        {/* <Noise premultiply blendFunction={BlendFunction[currentBlendFunction]} /> */}
+        <Bloom luminanceThreshold={1.1} mipmapBlur />
 
         <ToneMapping />
       </EffectComposer>
@@ -51,7 +53,8 @@ export default function Experience() {
 
       <mesh castShadow position-x={2} scale={1.5}>
         <boxGeometry />
-        <meshStandardMaterial color="mediumpurple" />
+        {/* <meshStandardMaterial color='white' emissive='mediumpurple' emissiveIntensity={10 } toneMapped={false} /> */}
+        <meshBasicMaterial color={[1.5, 1, 4]} toneMapped={false} />
       </mesh>
 
       <mesh
