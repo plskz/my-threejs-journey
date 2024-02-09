@@ -18,11 +18,16 @@ import DrunkEffect from "./DrunkEffect";
 export default function Experience() {
   const drunkRef = useRef<DrunkEffect>(null!);
 
-  const { currentBlendFunction } = useControls({
-    currentBlendFunction: {
-      options: Object.keys(BlendFunction),
-      value: "NORMAL",
-    },
+  // const { currentBlendFunction } = useControls({
+  //   currentBlendFunction: {
+  //     options: Object.keys(BlendFunction),
+  //     value: "NORMAL",
+  //   },
+  // });
+
+  const drunkProps = useControls("Drunk Effect", {
+    frequency: { value: 2, min: 1, max: 20 },
+    amplitude: { value: 0.1, min: 0, max: 1 },
   });
 
   return (
@@ -49,7 +54,7 @@ export default function Experience() {
           bokehScale={6}
         /> */}
 
-        <Drunk ref={drunkRef} frequency={2} amplitude={0.1} />
+        <Drunk ref={drunkRef} {...drunkProps} />
         <ToneMapping />
       </EffectComposer>
 
@@ -68,7 +73,7 @@ export default function Experience() {
       <mesh castShadow position-x={2} scale={1.5}>
         <boxGeometry />
         {/* <meshStandardMaterial color='white' emissive='mediumpurple' emissiveIntensity={10 } toneMapped={false} /> */}
-        <meshBasicMaterial color={[1.5, 1, 4]} toneMapped={false} />
+        <meshBasicMaterial color="mediumpurple" toneMapped={false} />
       </mesh>
 
       <mesh
