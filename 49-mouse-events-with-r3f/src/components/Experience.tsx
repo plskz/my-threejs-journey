@@ -1,6 +1,6 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useCursor } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { BoxGeometry, MeshStandardMaterial } from "three";
 
 const generateRandomColor = () => {
@@ -9,6 +9,8 @@ const generateRandomColor = () => {
 
 export default function Experience() {
   const cube = useRef<THREE.Mesh<BoxGeometry, MeshStandardMaterial>>(null!);
+  const [hovered, set] = useState(false);
+  useCursor(hovered);
 
   useFrame((_, delta) => {
     cube.current.rotation.y += delta * 0.2;
@@ -35,8 +37,8 @@ export default function Experience() {
         position-x={2}
         scale={1.5}
         onClick={cubeHandler}
-        onPointerEnter={() => (document.body.style.cursor = "pointer")}
-        onPointerLeave={() => (document.body.style.cursor = "default")}
+        onPointerEnter={() => set(true)}
+        onPointerLeave={() => set(false)}
       >
         <boxGeometry />
         <meshStandardMaterial color="mediumpurple" />
