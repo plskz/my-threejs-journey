@@ -3,6 +3,7 @@ import {
   Environment,
   Float,
   PresentationControls,
+  Text,
 } from "@react-three/drei";
 import { Model } from "./Model";
 
@@ -22,6 +23,7 @@ export default function Experience() {
         snap={{ mass: 4, tension: 400 }}
       >
         <Float rotationIntensity={0.4}>
+          {/* screen light */}
           <rectAreaLight
             width={2.5}
             height={1.65}
@@ -30,7 +32,23 @@ export default function Experience() {
             rotation={[-0.1, Math.PI, 0]}
             position={[0, 0.55, -1.15]}
           />
+
+          {/* laptop */}
           <Model />
+
+          {/* display text */}
+          <Text
+            font="./bangers-v20-latin-regular.woff"
+            fontSize={1}
+            position={[2, 0.75, 0.75]}
+            rotation-y={-1.25}
+            maxWidth={2}
+            textAlign="center"
+            color={"#E292B1"}
+            letterSpacing={0.2}
+          >
+            Zai 2021
+          </Text>
         </Float>
       </PresentationControls>
 
