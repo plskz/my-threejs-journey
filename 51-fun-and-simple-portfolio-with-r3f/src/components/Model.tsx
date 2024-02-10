@@ -1,5 +1,10 @@
 import { Html, useGLTF } from "@react-three/drei";
 
+const portfolio = {
+  2021: "https://old-portfolio-plskz.vercel.app/",
+  2022: "https://plskz-me.vercel.app/",
+};
+
 export function Model() {
   const computer = useGLTF(
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf",
@@ -15,7 +20,7 @@ export function Model() {
       >
         <iframe
           className="h-[670px] w-[1024px] rounded-3xl border-none bg-black"
-          src="https://plskz-me.vercel.app/"
+          src={portfolio[2021]}
         />
       </Html>
     </primitive>
