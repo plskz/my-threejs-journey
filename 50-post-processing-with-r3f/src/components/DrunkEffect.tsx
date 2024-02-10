@@ -27,7 +27,6 @@ export default class DrunkEffect extends Effect {
     amplitude: number;
     blendFunction?: BlendFunction;
   }) {
-    console.log(blendFunction);
     super("DrunkEffect", fragmentShader, {
       blendFunction,
       uniforms: new Map([
