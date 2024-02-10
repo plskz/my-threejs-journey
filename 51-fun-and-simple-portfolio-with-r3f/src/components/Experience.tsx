@@ -1,4 +1,9 @@
-import { Environment, Float, PresentationControls } from "@react-three/drei";
+import {
+  ContactShadows,
+  Environment,
+  Float,
+  PresentationControls,
+} from "@react-three/drei";
 import { Model } from "./Model";
 
 export default function Experience() {
@@ -20,6 +25,8 @@ export default function Experience() {
           <Model />
         </Float>
       </PresentationControls>
+
+      <ContactShadows position-y={-1.4} opacity={0.4} scale={5} blur={2.4} />
     </>
   );
 }
