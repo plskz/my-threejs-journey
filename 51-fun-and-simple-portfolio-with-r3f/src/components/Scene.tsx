@@ -4,6 +4,7 @@ import Experience from "./Experience";
 export default function Scene() {
   return (
     <Canvas
+      className="touch-none"
       camera={{
         fov: 45,
         near: 0.1,
