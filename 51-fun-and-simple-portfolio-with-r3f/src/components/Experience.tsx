@@ -1,4 +1,4 @@
-import { Center, Environment, OrbitControls } from "@react-three/drei";
+import { Environment, Float, OrbitControls } from "@react-three/drei";
 import { Model } from "./Model";
 
 export default function Experience() {
@@ -9,9 +9,9 @@ export default function Experience() {
 
       <OrbitControls makeDefault />
 
-      <Center>
+      <Float rotationIntensity={0.4}>
         <Model />
-      </Center>
+      </Float>
     </>
   );
 }
