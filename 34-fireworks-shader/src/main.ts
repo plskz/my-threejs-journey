@@ -70,13 +70,36 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 /**
- * Test
+ * Fireworks
  */
-const test = new THREE.Mesh(
-  new THREE.BoxGeometry(1, 1, 1),
-  new THREE.MeshBasicMaterial()
-)
-scene.add(test)
+const createFirework = (count: number, position: THREE.Vector3) => {
+  // Geometry
+  const positionsArray = new Float32Array(count * 3)
+
+  for (let i = 0; i < count; i++) {
+    const i3 = i * 3
+
+    positionsArray[i3] = Math.random() - 0.5
+    positionsArray[i3 + 1] = Math.random() - 0.5
+    positionsArray[i3 + 2] = Math.random() - 0.5
+  }
+
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(positionsArray, 3)
+  )
+
+  // Material
+  const material = new THREE.PointsMaterial()
+
+  // Points
+  const firework = new THREE.Points(geometry, material)
+  firework.position.copy(position)
+  scene.add(firework)
+}
+
+createFirework(100, new THREE.Vector3(0, 0, 0))
 
 /**
  * Animate
