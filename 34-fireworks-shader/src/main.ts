@@ -7,6 +7,7 @@ import GUI from 'lil-gui'
 
 import fireworkVertexShader from './shaders/firework/vertex.vert'
 import fireworkFragmentShader from './shaders/firework/fragment.frag'
+import { texture } from 'three/examples/jsm/nodes/Nodes.js'
 
 /**
  * Base
@@ -29,8 +30,8 @@ const textureLoader = new THREE.TextureLoader()
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
-  resolution: new THREE.Vector2,
-  pixelRatio: Math.min(window.devicePixelRatio, 2)
+  resolution: new THREE.Vector2(),
+  pixelRatio: Math.min(window.devicePixelRatio, 2),
 }
 sizes.resolution = new THREE.Vector2(sizes.width, sizes.height)
 
@@ -39,7 +40,10 @@ window.addEventListener('resize', () => {
   sizes.width = window.innerWidth
   sizes.height = window.innerHeight
   sizes.pixelRatio = Math.min(window.devicePixelRatio, 2)
-  sizes.resolution.set(sizes.width * sizes.pixelRatio, sizes.height * sizes.pixelRatio)
+  sizes.resolution.set(
+    sizes.width * sizes.pixelRatio,
+    sizes.height * sizes.pixelRatio
+  )
 
   // Update camera
   camera.aspect = sizes.width / sizes.height
@@ -80,10 +84,22 @@ renderer.setPixelRatio(sizes.pixelRatio)
 /**
  * Fireworks
  */
+const textures = [
+  textureLoader.load('./particles/1.png'),
+  textureLoader.load('./particles/2.png'),
+  textureLoader.load('./particles/3.png'),
+  textureLoader.load('./particles/4.png'),
+  textureLoader.load('./particles/5.png'),
+  textureLoader.load('./particles/6.png'),
+  textureLoader.load('./particles/7.png'),
+  textureLoader.load('./particles/8.png'),
+]
+
 const createFirework = (
   count: number,
   position: THREE.Vector3,
-  size: number
+  size: number,
+  texture: THREE.Texture
 ) => {
   // Geometry
   const positionsArray = new Float32Array(count * 3)
@@ -103,13 +119,18 @@ const createFirework = (
   )
 
   // Material
+  texture.flipY = false
   const material = new THREE.ShaderMaterial({
     vertexShader: fireworkVertexShader,
     fragmentShader: fireworkFragmentShader,
     uniforms: {
       uSize: new THREE.Uniform(size),
       uResolution: new THREE.Uniform(sizes.resolution),
+      uTexture: new THREE.Uniform(texture),
     },
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
   })
 
   // Points
@@ -118,7 +139,7 @@ const createFirework = (
   scene.add(firework)
 }
 
-createFirework(100, new THREE.Vector3(), 0.5)
+createFirework(100, new THREE.Vector3(), 0.5, textures[7])
 
 /**
  * Animate
