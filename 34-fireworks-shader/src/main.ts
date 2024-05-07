@@ -3,6 +3,7 @@ import './style.css'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
+import gsap from 'gsap'
 import GUI from 'lil-gui'
 
 import fireworkFragmentShader from './shaders/firework/fragment.frag'
@@ -144,6 +145,7 @@ const createFirework = (
       uResolution: new THREE.Uniform(sizes.resolution),
       uTexture: new THREE.Uniform(texture),
       uColor: new THREE.Uniform(color),
+      uProgress: new THREE.Uniform(0),
     },
     transparent: true,
     depthWrite: false,
@@ -154,6 +156,13 @@ const createFirework = (
   const firework = new THREE.Points(geometry, material)
   firework.position.copy(position)
   scene.add(firework)
+
+  // Animate
+  gsap.to(material.uniforms.uProgress, {
+    value: 1,
+    duration: 3,
+    ease: 'linear',
+  })
 }
 
 createFirework(
