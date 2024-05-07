@@ -5,9 +5,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
 import GUI from 'lil-gui'
 
-import fireworkVertexShader from './shaders/firework/vertex.vert'
 import fireworkFragmentShader from './shaders/firework/fragment.frag'
-import { texture } from 'three/examples/jsm/nodes/Nodes.js'
+import fireworkVertexShader from './shaders/firework/vertex.vert'
 
 /**
  * Base
@@ -103,6 +102,7 @@ const createFirework = (
 ) => {
   // Geometry
   const positionsArray = new Float32Array(count * 3)
+  const sizesArray = new Float32Array(count)
 
   for (let i = 0; i < count; i++) {
     const i3 = i * 3
@@ -110,12 +110,18 @@ const createFirework = (
     positionsArray[i3] = Math.random() - 0.5
     positionsArray[i3 + 1] = Math.random() - 0.5
     positionsArray[i3 + 2] = Math.random() - 0.5
+
+    sizesArray[i] = Math.random()
   }
 
   const geometry = new THREE.BufferGeometry()
   geometry.setAttribute(
     'position',
     new THREE.Float32BufferAttribute(positionsArray, 3)
+  )
+  geometry.setAttribute(
+    'aSize',
+    new THREE.Float32BufferAttribute(sizesArray, 1)
   )
 
   // Material
