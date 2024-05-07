@@ -99,7 +99,8 @@ const createFirework = (
   position: THREE.Vector3,
   size: number,
   texture: THREE.Texture,
-  radius: number
+  radius: number,
+  color: THREE.Color
 ) => {
   // Geometry
   const positionsArray = new Float32Array(count * 3)
@@ -142,6 +143,7 @@ const createFirework = (
       uSize: new THREE.Uniform(size),
       uResolution: new THREE.Uniform(sizes.resolution),
       uTexture: new THREE.Uniform(texture),
+      uColor: new THREE.Uniform(color),
     },
     transparent: true,
     depthWrite: false,
@@ -154,7 +156,14 @@ const createFirework = (
   scene.add(firework)
 }
 
-createFirework(100, new THREE.Vector3(), 0.5, textures[7], 1)
+createFirework(
+  100,
+  new THREE.Vector3(),
+  0.5,
+  textures[7],
+  1,
+  new THREE.Color('#8affff')
+)
 
 /**
  * Animate
