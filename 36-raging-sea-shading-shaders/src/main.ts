@@ -46,21 +46,21 @@ const waterMaterial = new THREE.ShaderMaterial({
   vertexShader: waterVertexShader,
   fragmentShader: waterFragmentShader,
   uniforms: {
-    uTime: { value: 0 },
+    uTime: new THREE.Uniform(0),
 
-    uBigWavesElevation: { value: 0.2 },
-    uBigWavesFrequency: { value: new THREE.Vector2(4, 1.5) },
-    uBigWavesSpeed: { value: 0.75 },
+    uBigWavesElevation: new THREE.Uniform(0.2),
+    uBigWavesFrequency: new THREE.Uniform(new THREE.Vector2(4, 1.5)),
+    uBigWavesSpeed: new THREE.Uniform(0.75),
 
-    uSmallWavesElevation: { value: 0.15 },
-    uSmallWavesFrequency: { value: 3 },
-    uSmallWavesSpeed: { value: 0.2 },
-    uSmallIterations: { value: 4 },
+    uSmallWavesElevation: new THREE.Uniform(0.15),
+    uSmallWavesFrequency: new THREE.Uniform(3),
+    uSmallWavesSpeed: new THREE.Uniform(0.2),
+    uSmallIterations: new THREE.Uniform(4),
 
-    uDepthColor: { value: new THREE.Color(debugObject.depthColor) },
-    uSurfaceColor: { value: new THREE.Color(debugObject.surfaceColor) },
-    uColorOffset: { value: 0.925 },
-    uColorMultiplier: { value: 1 },
+    uDepthColor: new THREE.Uniform(new THREE.Color(debugObject.depthColor)),
+    uSurfaceColor: new THREE.Uniform(new THREE.Color(debugObject.surfaceColor)),
+    uColorOffset: new THREE.Uniform(0.925),
+    uColorMultiplier: new THREE.Uniform(1),
   },
 })
 
