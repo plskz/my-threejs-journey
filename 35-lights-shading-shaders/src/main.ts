@@ -58,7 +58,9 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 )
-camera.position.set(7, 7, 7)
+camera.position.x = 7
+camera.position.y = 7
+camera.position.z = 7
 scene.add(camera)
 
 // Controls
@@ -96,6 +98,34 @@ const material = new THREE.ShaderMaterial({
 gui.addColor(materialParameters, 'color').onChange(() => {
   material.uniforms.uColor.value.set(materialParameters.color)
 })
+
+/**
+ * Light helpers
+ */
+const directionalLightHelper = new THREE.Mesh(
+  new THREE.PlaneGeometry(),
+  new THREE.MeshBasicMaterial()
+)
+directionalLightHelper.material.color.setRGB(0.1, 0.1, 1)
+directionalLightHelper.material.side = THREE.DoubleSide
+directionalLightHelper.position.set(0, 0, 3)
+scene.add(directionalLightHelper)
+
+const pointLightHelper = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(0.1, 2),
+  new THREE.MeshBasicMaterial()
+)
+pointLightHelper.material.color.setRGB(1, 0.1, 0.1)
+pointLightHelper.position.set(0, 2.5, 0)
+scene.add(pointLightHelper)
+
+const pointLightHelper2 = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(0.1, 2),
+  new THREE.MeshBasicMaterial()
+)
+pointLightHelper2.material.color.setRGB(0.1, 1.0, 0.5)
+pointLightHelper2.position.set(2, 0, 2)
+scene.add(pointLightHelper2)
 
 /**
  * Objects
