@@ -33,16 +33,17 @@ void main()
     color *= light;
 
     // Halftone
-    float repetitions = 50.0;
+    float repetitions = 10.0;
 
     vec2 uv = gl_FragCoord.xy / uResolution.y;
     uv *= repetitions;
     uv = mod(uv, 1.0);
 
-
+    float point = distance(uv, vec2(0.5));
+    point = 1.0 - step(0.5, point);
 
     // Final color
-    gl_FragColor = vec4(uv, 1.0, 1.0);
+    gl_FragColor = vec4(point, point, point, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
 }
