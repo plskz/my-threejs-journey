@@ -97,10 +97,11 @@ gui.addColor(rendererParameters, 'clearColor').onChange(() => {
  * Material
  */
 const materialParameters = {
-  color: '',
+  color: '#ff794d',
   shadeColor: '',
+  shadowColor: '#8e19b8',
+  lightColor: '#e5ffe0',
 }
-materialParameters.color = '#ff794d'
 
 const material = new THREE.ShaderMaterial({
   vertexShader: halftoneVertexShader,
@@ -116,12 +117,46 @@ const material = new THREE.ShaderMaterial({
         sizes.height * sizes.pixelRatio
       )
     ),
+
+    uShadowRepetitions: new THREE.Uniform(100),
+    uShadowColor: new THREE.Uniform(
+      new THREE.Color(materialParameters.shadowColor)
+    ),
+
+    uLightRepetitions: new THREE.Uniform(130),
+    uLightColor: new THREE.Uniform(
+      new THREE.Color(materialParameters.lightColor)
+    ),
   },
 })
 
 gui.addColor(materialParameters, 'color').onChange(() => {
   material.uniforms.uColor.value.set(materialParameters.color)
 })
+
+const shadowFolderRepetitions = gui.addFolder('Shadow repetitions')
+shadowFolderRepetitions
+  .add(material.uniforms.uShadowRepetitions, 'value')
+  .min(1)
+  .max(300)
+  .step(1)
+shadowFolderRepetitions
+  .addColor(materialParameters, 'shadowColor')
+  .onChange(() => {
+    material.uniforms.uShadowColor.value.set(materialParameters.shadowColor)
+  })
+
+const lightFolderRepetitions = gui.addFolder('Light repetitions')
+lightFolderRepetitions
+  .add(material.uniforms.uLightRepetitions, 'value')
+  .min(1)
+  .max(300)
+  .step(1)
+lightFolderRepetitions
+  .addColor(materialParameters, 'lightColor')
+  .onChange(() => {
+    material.uniforms.uLightColor.value.set(materialParameters.lightColor)
+  })
 
 /**
  * Objects
