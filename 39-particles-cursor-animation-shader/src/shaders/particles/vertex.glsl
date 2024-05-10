@@ -15,10 +15,11 @@ void main()
     displacementIntensity = smoothstep(0.1, 0.3, displacementIntensity);
 
     vec3 displacement = vec3(
-        cos(aAngle),
-        sin(aAngle),
+        cos(aAngle) * 0.2,
+        sin(aAngle) * 0.2,
         1.0
     );
+    displacement = normalize(displacement);
     displacement *= displacementIntensity;
     displacement *= 3.0;
     displacement *= aIntensity;
