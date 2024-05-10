@@ -15,7 +15,7 @@ import particlesFragmentShader from './shaders/particles/fragment.glsl'
  */
 // Debug
 const gui = new GUI({ width: 340 })
-const debugObject = {}
+const debugObject: any = {}
 
 // Canvas
 const canvas = document.querySelector<HTMLCanvasElement>('canvas.webgl')!
@@ -100,6 +100,7 @@ const particles: any = {}
 
 // Geometry
 particles.geometry = new THREE.SphereGeometry(3)
+particles.geometry.setIndex(null)
 
 // Material
 particles.material = new THREE.ShaderMaterial({
@@ -113,7 +114,10 @@ particles.material = new THREE.ShaderMaterial({
         sizes.height * sizes.pixelRatio
       )
     ),
+
   },
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
 })
 
 // Points
