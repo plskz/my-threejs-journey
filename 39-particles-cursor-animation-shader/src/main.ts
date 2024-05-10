@@ -87,6 +87,7 @@ const displacement = {
   raycaster: new THREE.Raycaster(),
   screenCursor: new THREE.Vector2(),
   canvasCursor: new THREE.Vector2(),
+  texture: new THREE.CanvasTexture(null!),
 }
 
 // 2D canvas
@@ -132,6 +133,9 @@ window.addEventListener('pointermove', (event) => {
   displacement.screenCursor.y = -(event.clientY / sizes.height) * 2 + 1
 })
 
+// Texture
+displacement.texture = new THREE.CanvasTexture(displacement.canvas)
+
 /**
  * Particles
  */
@@ -148,6 +152,7 @@ const particlesMaterial = new THREE.ShaderMaterial({
       )
     ),
     uPictureTexture: new THREE.Uniform(textureLoader.load('./picture-1.png')),
+    uDisplacementTexture: new THREE.Uniform(displacement.texture),
   },
 })
 const particles = new THREE.Points(particlesGeometry, particlesMaterial)
@@ -199,6 +204,9 @@ const tick = () => {
     glowSize,
     glowSize
   )
+
+  // Texture
+  displacement.texture.needsUpdate = true
 
   // Render
   renderer.render(scene, camera)
