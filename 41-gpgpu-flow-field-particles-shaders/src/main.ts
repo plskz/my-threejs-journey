@@ -1,16 +1,15 @@
-import './style.css'
 import * as THREE from 'three'
+import './style.css'
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js'
 import { DRACOLoader, GLTFLoader } from 'three/examples/jsm/Addons.js'
 
-import { gsap } from 'gsap'
 import GUI from 'lil-gui'
 
-import particlesVertexShader from './shaders/particles/vertex.glsl'
-import particlesFragmentShader from './shaders/particles/fragment.glsl'
 import gpgpuParticlesShader from './shaders/gpgpu/particles.glsl'
+import particlesFragmentShader from './shaders/particles/fragment.glsl'
+import particlesVertexShader from './shaders/particles/vertex.glsl'
 
 /**
  * Base
@@ -93,10 +92,16 @@ debugObject.clearColor = '#29191f'
 renderer.setClearColor(debugObject.clearColor)
 
 /**
+ * Load model
+ */
+const gltf = await gltfLoader.loadAsync('./model.glb')
+console.log(gltf)
+
+/**
  * Base geometry
  */
 const baseGeometry: any = {}
-baseGeometry.instance = new THREE.SphereGeometry(3)
+baseGeometry.instance = gltf.scene.children[0].geometry
 baseGeometry.count = baseGeometry.instance.attributes.position.count
 
 /**
@@ -155,6 +160,7 @@ const particles: any = {}
 
 // Geometry
 const particlesUvArray = new Float32Array(baseGeometry.count * 2)
+const sizesArray = new Float32Array(baseGeometry.count)
 
 for (let y = 0; y < gpgpu.size; y++) {
   for (let x = 0; x < gpgpu.size; x++) {
@@ -167,6 +173,9 @@ for (let y = 0; y < gpgpu.size; y++) {
 
     particlesUvArray[i2 + 0] = uvX
     particlesUvArray[i2 + 1] = uvY
+
+    // Size
+    sizesArray[i] = Math.random()
   }
 }
 
@@ -175,14 +184,25 @@ particles.geometry.setDrawRange(0, baseGeometry.count)
 
 particles.geometry = new THREE.BufferGeometry()
 particles.geometry.setDrawRange(0, baseGeometry.count)
-particles.geometry.setAttribute('aParticlesUv', new THREE.BufferAttribute(particlesUvArray, 2))
+particles.geometry.setAttribute(
+  'aParticlesUv',
+  new THREE.BufferAttribute(particlesUvArray, 2)
+)
+particles.geometry.setAttribute(
+  'aColor',
+  baseGeometry.instance.attributes.color
+)
+particles.geometry.setAttribute(
+  'aSize',
+  new THREE.BufferAttribute(sizesArray, 1)
+)
 
 // Material
 particles.material = new THREE.ShaderMaterial({
   vertexShader: particlesVertexShader,
   fragmentShader: particlesFragmentShader,
   uniforms: {
-    uSize: new THREE.Uniform(0.4),
+    uSize: new THREE.Uniform(0.07),
     uResolution: new THREE.Uniform(
       new THREE.Vector2(
         sizes.width * sizes.pixelRatio,
