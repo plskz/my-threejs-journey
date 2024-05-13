@@ -50,25 +50,24 @@ rgbeLoader.load('./aerodynamics_workshop.hdr', (environmentMap) => {
  */
 // Material
 const patchMap = {
-  csm_Slice:
-  {
-      '#include <colorspace_fragment>':
-      `
+  csm_Slice: {
+    '#include <colorspace_fragment>': `
           #include <colorspace_fragment>
 
           if(!gl_FrontFacing)
               gl_FragColor = vec4(0.75, 0.15, 0.3, 1.0);
-      `
-  }
+      `,
+  },
 }
-
 
 const uniforms = {
   uSliceStart: new THREE.Uniform(1.75),
   uSliceArc: new THREE.Uniform(1.25),
 }
 
-gui.add(uniforms.uSliceStart, 'value', - Math.PI, Math.PI, 0.001).name('uSliceStart')
+gui
+  .add(uniforms.uSliceStart, 'value', -Math.PI, Math.PI, 0.001)
+  .name('uSliceStart')
 gui.add(uniforms.uSliceArc, 'value', 0, Math.PI * 2, 0.001).name('uSliceArc')
 
 const material = new THREE.MeshStandardMaterial({
@@ -92,7 +91,20 @@ const slicedMaterial = new CustomShaderMaterial({
   roughness: 0.25,
   envMapIntensity: 0.5,
   color: '#858080',
-  side: THREE.DoubleSide
+  side: THREE.DoubleSide,
+})
+
+const slicedDepthMaterial = new CustomShaderMaterial({
+  // CSM
+  baseMaterial: THREE.MeshDepthMaterial,
+  vertexShader: slicedVertexShader,
+  fragmentShader: slicedFragmentShader,
+  uniforms: uniforms,
+  patchMap: patchMap,
+  silent: true,
+
+  // MeshDepthMaterial
+  depthPacking: THREE.RGBADepthPacking,
 })
 
 // Model
@@ -105,6 +117,7 @@ gltfLoader.load('./gears.glb', (gltf) => {
     if (child.isMesh) {
       if (child.name === 'outerHull') {
         child.material = slicedMaterial
+        child.customDepthMaterial = slicedDepthMaterial
       } else {
         child.material = material
       }
