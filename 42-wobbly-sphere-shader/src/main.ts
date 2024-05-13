@@ -7,8 +7,12 @@ import {
   GLTFLoader,
   RGBELoader,
 } from 'three/examples/jsm/Addons.js'
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
 import GUI from 'lil-gui'
+
+import wobbleVertexShader from './shaders/wobble/vertex.glsl'
+import wobbleFragmentShader from './shaders/wobble/fragment.glsl'
 
 /**
  * Base
@@ -44,7 +48,14 @@ rgbeLoader.load('./urban_alley_01_1k.hdr', (environmentMap) => {
  * Wobble
  */
 // Material
-const material = new THREE.MeshPhysicalMaterial({
+const material = new CustomShaderMaterial({
+  // CSM
+  baseMaterial: THREE.MeshPhysicalMaterial,
+  vertexShader: wobbleVertexShader,
+  fragmentShader: wobbleFragmentShader,
+  silent: true,
+
+  // MeshPhysicalMaterial
   metalness: 0,
   roughness: 0.5,
   color: '#ffffff',
@@ -52,7 +63,7 @@ const material = new THREE.MeshPhysicalMaterial({
   ior: 1.5,
   thickness: 1.5,
   transparent: true,
-  wireframe: false,
+  wireframe: false
 })
 
 // Tweaks
