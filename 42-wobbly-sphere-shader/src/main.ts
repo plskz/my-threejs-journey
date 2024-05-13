@@ -54,6 +54,10 @@ const uniforms = {
   uPositionFrequency: new THREE.Uniform(0.5),
   uTimeFrequency: new THREE.Uniform(0.4),
   uStrength: new THREE.Uniform(0.3),
+
+  uWarpPositionFrequency: new THREE.Uniform(0.38),
+  uWarpTimeFrequency: new THREE.Uniform(0.12),
+  uWarpStrength: new THREE.Uniform(1.7),
 }
 
 const material = new CustomShaderMaterial({
@@ -87,10 +91,12 @@ const depthMaterial = new CustomShaderMaterial({
 })
 
 // Tweaks
-// Tweaks
 gui.add(uniforms.uPositionFrequency, 'value', 0, 2, 0.001).name('uPositionFrequency')
 gui.add(uniforms.uTimeFrequency, 'value', 0, 2, 0.001).name('uTimeFrequency')
 gui.add(uniforms.uStrength, 'value', 0, 2, 0.001).name('uStrength')
+gui.add(uniforms.uWarpPositionFrequency, 'value', 0, 2, 0.001).name('uWarpPositionFrequency')
+gui.add(uniforms.uWarpTimeFrequency, 'value', 0, 2, 0.001).name('uWarpTimeFrequency')
+gui.add(uniforms.uWarpStrength, 'value', 0, 2, 0.001).name('uWarpStrength')
 
 gui.add(material, 'metalness', 0, 1, 0.001)
 gui.add(material, 'roughness', 0, 1, 0.001)
