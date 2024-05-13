@@ -7,8 +7,12 @@ import {
   GLTFLoader,
   RGBELoader,
 } from 'three/examples/jsm/Addons.js'
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
 import GUI from 'lil-gui'
+
+import slicedVertexShader from './shaders/sliced/vertex.glsl'
+import slicedFragmentShader from './shaders/sliced/fragment.glsl'
 
 /**
  * Base
@@ -52,6 +56,20 @@ const material = new THREE.MeshStandardMaterial({
   color: '#858080',
 })
 
+const slicedMaterial = new CustomShaderMaterial({
+  // CSM
+  baseMaterial: THREE.MeshStandardMaterial,
+  vertexShader: slicedVertexShader,
+  fragmentShader: slicedFragmentShader,
+  silent: true,
+
+  // MeshStandardMaterial
+  metalness: 0.5,
+  roughness: 0.25,
+  envMapIntensity: 0.5,
+  color: '#858080',
+})
+
 // Model
 let model: any = null
 
@@ -60,7 +78,12 @@ gltfLoader.load('./gears.glb', (gltf) => {
 
   model.traverse((child) => {
     if (child.isMesh) {
-      child.material = material
+      if (child.name === 'outerHull') {
+        child.material = slicedMaterial
+      } else {
+        child.material = material
+      }
+
       child.castShadow = true
       child.receiveShadow = true
     }
