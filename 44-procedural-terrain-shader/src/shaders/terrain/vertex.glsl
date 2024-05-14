@@ -1,3 +1,4 @@
+uniform float uTime;
 uniform float uPositionFrequency;
 uniform float uStrength;
 uniform float uWarpFrequency;
@@ -8,6 +9,7 @@ uniform float uWarpStrength;
 float getElevation(vec2 position)
 {
     vec2 warpedPosition = position;
+    warpedPosition += uTime * 0.2;
     warpedPosition += simplexNoise2d(warpedPosition * uPositionFrequency * uWarpFrequency) * uWarpStrength;
     
     float elevation = 0.0;
