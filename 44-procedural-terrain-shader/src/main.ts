@@ -57,6 +57,8 @@ debugObject.colorRock = '#bfbd8d'
 
 const uniforms = {
   uTime: new THREE.Uniform(0),
+  uTimeSpeed: new THREE.Uniform(0.2),
+
   uPositionFrequency: new THREE.Uniform(0.2),
   uStrength: new THREE.Uniform(2.0),
   uWarpFrequency: new THREE.Uniform(5),
@@ -69,6 +71,8 @@ const uniforms = {
   uColorSnow: new THREE.Uniform(new THREE.Color(debugObject.colorSnow)),
   uColorRock: new THREE.Uniform(new THREE.Color(debugObject.colorRock)),
 }
+
+gui.add(uniforms.uTimeSpeed, 'value', 0, 5, 0.001).name('uTimeSpeed')
 
 gui.add(uniforms.uPositionFrequency, 'value', 0, 1, 0.001).name('uPositionFrequency')
 gui.add(uniforms.uStrength, 'value', 0, 10, 0.001).name('uStrength')
