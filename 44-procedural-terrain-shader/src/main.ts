@@ -72,19 +72,25 @@ const uniforms = {
   uColorRock: new THREE.Uniform(new THREE.Color(debugObject.colorRock)),
 }
 
-gui.add(uniforms.uTimeSpeed, 'value', 0, 5, 0.001).name('uTimeSpeed')
+const timeFolder = gui.addFolder('Time');
+const positionFolder = gui.addFolder('Position');
+const warpFolder = gui.addFolder('Warp');
+const colorFolder = gui.addFolder('Colors');
 
-gui.add(uniforms.uPositionFrequency, 'value', 0, 1, 0.001).name('uPositionFrequency')
-gui.add(uniforms.uStrength, 'value', 0, 10, 0.001).name('uStrength')
-gui.add(uniforms.uWarpFrequency, 'value', 0, 10, 0.001).name('uWarpFrequency')
-gui.add(uniforms.uWarpStrength, 'value', 0, 1, 0.001).name('uWarpStrength')
+timeFolder.add(uniforms.uTimeSpeed, 'value', 0, 5, 0.001).name('uTimeSpeed')
 
-gui.addColor(debugObject, 'colorWaterDeep').onChange(() => uniforms.uColorWaterDeep.value.set(debugObject.colorWaterDeep))
-gui.addColor(debugObject, 'colorWaterSurface').onChange(() => uniforms.uColorWaterSurface.value.set(debugObject.colorWaterSurface))
-gui.addColor(debugObject, 'colorSand').onChange(() => uniforms.uColorSand.value.set(debugObject.colorSand))
-gui.addColor(debugObject, 'colorGrass').onChange(() => uniforms.uColorGrass.value.set(debugObject.colorGrass))
-gui.addColor(debugObject, 'colorSnow').onChange(() => uniforms.uColorSnow.value.set(debugObject.colorSnow))
-gui.addColor(debugObject, 'colorRock').onChange(() => uniforms.uColorRock.value.set(debugObject.colorRock))
+positionFolder.add(uniforms.uPositionFrequency, 'value', 0, 1, 0.001).name('uPositionFrequency')
+positionFolder.add(uniforms.uStrength, 'value', 0, 10, 0.001).name('uStrength')
+
+warpFolder.add(uniforms.uWarpFrequency, 'value', 0, 10, 0.001).name('uWarpFrequency')
+warpFolder.add(uniforms.uWarpStrength, 'value', 0, 1, 0.001).name('uWarpStrength')
+
+colorFolder.addColor(debugObject, 'colorWaterDeep').onChange(() => uniforms.uColorWaterDeep.value.set(debugObject.colorWaterDeep))
+colorFolder.addColor(debugObject, 'colorWaterSurface').onChange(() => uniforms.uColorWaterSurface.value.set(debugObject.colorWaterSurface))
+colorFolder.addColor(debugObject, 'colorSand').onChange(() => uniforms.uColorSand.value.set(debugObject.colorSand))
+colorFolder.addColor(debugObject, 'colorGrass').onChange(() => uniforms.uColorGrass.value.set(debugObject.colorGrass))
+colorFolder.addColor(debugObject, 'colorSnow').onChange(() => uniforms.uColorSnow.value.set(debugObject.colorSnow))
+colorFolder.addColor(debugObject, 'colorRock').onChange(() => uniforms.uColorRock.value.set(debugObject.colorRock))
 
 const material = new CustomShaderMaterial({
   // CSM
